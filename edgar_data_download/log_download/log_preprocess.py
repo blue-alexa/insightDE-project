@@ -10,7 +10,7 @@ def unzip_and_save_csv(source_folder, target_folder):
     temp = os.path.join(source_folder, 'temp')
 
     # make folders
-    os.mkdir(temp)
+    os.mkdir(temp, mode=0o777)
     logger.info(f"Successfully created directory {temp}")
 
     try:

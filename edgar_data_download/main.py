@@ -42,9 +42,9 @@ logger.info(f"Start downloading daily filings")
 
 pool = Pool(processes=8)              # start 8 worker processes
 
-filing_path = '/Users/weiyajiang/Development/edgar_data_download/data/filings'
+filing_path = 'data/filings'
 try:
-    os.makedirs(filing_path)
+    os.makedirs(filing_path, mode=0o777)
     logger.info(f"Successfully created directory {filing_path}")
 except FileExistsError:
     pass
@@ -74,10 +74,10 @@ logger.info(f"Start downloading log files")
 
 pool = Pool(processes=8)              # start 8 worker processes
 
-log_raw_data_path = '/Users/weiyajiang/Development/edgar_data_download/raw_data/log_file'
+log_raw_data_path = 'raw_data/log_file'
 
 try:
-    os.makedirs(log_raw_data_path)
+    os.makedirs(log_raw_data_path, mode=0o777)
     logger.info(f"Successfully created directory {log_raw_data_path}")
 except FileExistsError:
     pass
@@ -100,13 +100,32 @@ for i in pool.imap_unordered(log_downloader.download_log, log_params):
 print(f"Elapsed Time: {time() - log_start}")
 
 ############ unzip log files and save csv format only ##############
-target_log_path = '/Users/weiyajiang/Development/edgar_data_download/data/log_file'
+target_log_path = 'data/log_file'
 try:
-    os.makedirs(target_log_path)
+    os.makedirs(target_log_path, mode=0o777)
     logger.info(f"Successfully created directory {target_log_path}")
 except FileExistsError:
     pass
 
 log_preprocess.unzip_and_save_csv(log_raw_data_path, target_log_path)
 
+################### upload to S3 #########################
 
+import boto3
+import glob
+
+filing_path = 'data/filings'
+log_path = 'data/log_file'
+bucket_name = 'miniminds-edgar-data'
+
+s3 = boto3.resource('s3')
+
+for f in glob.glob(filing_path + '/*.idx'):
+    data = open(f, 'rb')
+    s3.Bucket(bucket_name).put_object(Key=filing_path, Body=data)
+    logger.info("Successfuly uploaded Filing {f} to S3")
+
+for f in glob.glob(log_path + '/*.csv'):
+    data = open(f, 'rb')
+    s3.Bucket(bucket_name).put_object(Key=log_path, Body=data)
+    logger.info("Successfuly uploaded Log {f} to S3")
