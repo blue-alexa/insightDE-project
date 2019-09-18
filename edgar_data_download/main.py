@@ -1,4 +1,4 @@
-import os
+import glob, os, shutil
 
 from multiprocessing.pool import Pool
 from time import time
@@ -6,6 +6,8 @@ import logging
 from logging.config import dictConfig
 
 from datetime import date, timedelta
+
+import boto3
 
 from filing_download import filing_downloader
 from log_download import log_downloader
@@ -37,12 +39,21 @@ dictConfig(logging_config)
 # create logger
 logger = logging.getLogger("edgar_build.main")
 
+# params
+base_path = os.path.dirname(os.path.abspath(__file__))
+filing_path = os.path.join(base_path, 'data/filings')
+raw_log_path = os.path.join(base_path, 'raw_data/log_file')
+log_path = os.path.join(base_path, 'data/log_file')
+
+s3_filing_path = 'data/filings'
+s3_log_path = 'data/log_file'
+bucket_name = 'miniminds-edgar-data'
+
 ######### download filings ##############
 logger.info(f"Start downloading daily filings")
 
 pool = Pool(processes=8)              # start 8 worker processes
 
-filing_path = 'data/filings'
 try:
     os.makedirs(filing_path, mode=0o777)
     logger.info(f"Successfully created directory {filing_path}")
@@ -74,11 +85,9 @@ logger.info(f"Start downloading log files")
 
 pool = Pool(processes=8)              # start 8 worker processes
 
-log_raw_data_path = 'raw_data/log_file'
-
 try:
-    os.makedirs(log_raw_data_path, mode=0o777)
-    logger.info(f"Successfully created directory {log_raw_data_path}")
+    os.makedirs(raw_log_path, mode=0o777)
+    logger.info(f"Successfully created directory {raw_log_path}")
 except FileExistsError:
     pass
 
@@ -88,8 +97,9 @@ log_end_date = date(2017, 1, 2)
 d = log_start_date
 while d <= log_end_date:
     filename = f"log{d.strftime('%Y%m%d')}.zip"
-    if not os.path.exists(os.path.join(log_raw_data_path, filename)):
-        log_params.append((d, log_raw_data_path))
+    final_filename = f"log{d.strftime('%Y%m%d')}.csv"
+    if not os.path.exists(os.path.join(log_path, final_filename)) and not os.path.exists(os.path.join(raw_log_path, filename)):
+        log_params.append((d, raw_log_path))
     d += timedelta(days=1)
 
 log_start = time()
@@ -100,32 +110,30 @@ for i in pool.imap_unordered(log_downloader.download_log, log_params):
 print(f"Elapsed Time: {time() - log_start}")
 
 ############ unzip log files and save csv format only ##############
-target_log_path = 'data/log_file'
 try:
-    os.makedirs(target_log_path, mode=0o777)
-    logger.info(f"Successfully created directory {target_log_path}")
+    os.makedirs(log_path, mode=0o777)
+    logger.info(f"Successfully created directory {log_path}")
 except FileExistsError:
     pass
 
-log_preprocess.unzip_and_save_csv(log_raw_data_path, target_log_path)
+log_preprocess.unzip_and_save_csv(raw_log_path, log_path)
+
+shutil.rmtree(raw_log_path)
+logger.info(f"Successfully remove raw log files at {raw_log_path}")
 
 ################### upload to S3 #########################
 
-import boto3
-import glob
-
-filing_path = 'data/filings'
-log_path = 'data/log_file'
-bucket_name = 'miniminds-edgar-data'
 
 s3 = boto3.resource('s3')
 
 for f in glob.glob(filing_path + '/*.idx'):
     data = open(f, 'rb')
-    s3.Bucket(bucket_name).put_object(Key=filing_path, Body=data)
-    logger.info("Successfuly uploaded Filing {f} to S3")
+    key = os.path.join(s3_filing_path, os.path.basename(f))
+    s3.Bucket(bucket_name).put_object(Key=key, Body=data)
+    logger.info(f"Successfuly uploaded Filing {key} to S3")
 
 for f in glob.glob(log_path + '/*.csv'):
     data = open(f, 'rb')
-    s3.Bucket(bucket_name).put_object(Key=log_path, Body=data)
-    logger.info("Successfuly uploaded Log {f} to S3")
+    key = os.path.join(s3_log_path, os.path.basename(f))
+    s3.Bucket(bucket_name).put_object(Key=key, Body=data)
+    logger.info(f"Successfuly uploaded Log {key} to S3")

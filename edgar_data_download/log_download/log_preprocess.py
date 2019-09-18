@@ -7,6 +7,10 @@ import logging
 def unzip_and_save_csv(source_folder, target_folder):
     logger = logging.getLogger("log_download.log_preprocess")
 
+    if not os.path.exists(source_folder):
+        logger.info(f"Source folder does not exists {source_folder}")
+        return
+
     temp = os.path.join(source_folder, 'temp')
 
     # make folders
@@ -23,6 +27,9 @@ def unzip_and_save_csv(source_folder, target_folder):
 
     # extract all zip files
     for f in glob.glob(source):
+        final_target = os.path.join(target_folder, os.path.basename(f))
+        if os.path.exists(final_target):
+            continue
         target = os.path.join(temp, os.path.basename(f))
         with zipfile.ZipFile(f, 'r') as zip_ref:
             zip_ref.extractall(target)
