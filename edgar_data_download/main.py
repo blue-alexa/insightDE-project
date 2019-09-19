@@ -40,7 +40,7 @@ dictConfig(logging_config)
 logger = logging.getLogger("edgar_build.main")
 
 # params
-base_path = os.path.dirname(os.path.abspath(__file__))
+base_path = '/var'
 filing_path = os.path.join(base_path, 'data/filings')
 raw_log_path = os.path.join(base_path, 'raw_data/log_file')
 log_path = os.path.join(base_path, 'data/log_file')
