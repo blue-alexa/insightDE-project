@@ -45,6 +45,12 @@ filing_path = os.path.join(base_path, 'data/filings')
 raw_log_path = os.path.join(base_path, 'raw_data/log_file')
 log_path = os.path.join(base_path, 'data/log_file')
 
+filing_start_date = date(1994, 7, 1)
+filing_end_date = date.today()
+
+log_start_date = date(2017, 1, 1)
+log_end_date = date(2017, 6, 30)
+
 s3_filing_path = 'data/filings'
 s3_log_path = 'data/log_file'
 bucket_name = 'miniminds-edgar-data'
@@ -61,9 +67,6 @@ except FileExistsError:
     pass
 
 filing_params = []
-filing_start_date = date(2019, 8, 17)
-
-filing_end_date = date(2019, 9, 16)
 
 d = filing_start_date
 while d <= filing_end_date:
@@ -92,8 +95,7 @@ except FileExistsError:
     pass
 
 log_params = []
-log_start_date = date(2017, 1, 1)
-log_end_date = date(2017, 1, 2)
+
 d = log_start_date
 while d <= log_end_date:
     filename = f"log{d.strftime('%Y%m%d')}.zip"
