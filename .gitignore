@@ -1,5 +1,6 @@
 .DS_Store
 .idea
+.csv
 __pycache__
 data
 raw_data
