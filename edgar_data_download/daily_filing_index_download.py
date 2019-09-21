@@ -54,7 +54,7 @@ while d <= filing_end_date:
 
 filing_start = time()
 
-for i in pool.imap_unordered(filing_downloader.download_filing, filing_params):
+for i in pool.imap_unordered(filing_downloader.download_filing_index, filing_params):
     print(i)
 
 print(f"Elapsed Time: {time() - filing_start}")

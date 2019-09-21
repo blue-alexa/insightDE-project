@@ -2,7 +2,7 @@ import os
 import logging
 import requests
 
-def download_filing(param):
+def download_filing_index(param):
     """
     download designated file from SEC website.
     :param param: (filedate: datetime.date object, path: path to store file)

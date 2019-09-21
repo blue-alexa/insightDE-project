@@ -17,15 +17,20 @@ rs = session.execute('SELECT * FROM test;')
 for row in rs:
     print(row)
 """
-import glob, csv
+import glob, os
 from datetime import datetime
 
 
 # source = '/data2/filing_index'
 source = '../edgar_data_download/data/filings'
 download_list_file = 'download_list.csv'
-download_list = []
+
+df = open(download_list_file, 'a')
+
 for f in glob.glob(source + '/*.idx'):
+    filename = os.path.basename(f)
+    doc_date = filename.split('.')[1]
+    print(f"Processing file {f}")
     with open(f, 'rb') as file:
         data = file.read()
         data = data.decode('ISO-8859-1')
@@ -38,8 +43,11 @@ for f in glob.glob(source + '/*.idx'):
             if len(data) == 5:
                 for i, elem in enumerate(data):
                     data[i] = elem.strip()
-
-                data[3] = datetime.strptime(data[3], "%Y%m%d")
+                try:
+                    data[3] = datetime.strptime(data[3], "%Y%m%d")
+                except ValueError:
+                    print(line)
+                    data[3] = datetime.strptime(doc_date, "%Y%m%d")
 
                 cik, company_name, form_type, date_filed, filing_content = data
                 accession_no = filing_content.split("/")[-1].split(".")[0] # get accession number
@@ -47,13 +55,8 @@ for f in glob.glob(source + '/*.idx'):
 
                 # write cik, company_name, form_type, date_filed, assession_no, url to database
 
-                download_list.append((accession_no, url))
+                df.write(accession_no+'|'+url+'\n')
 
-print(download_list)
-with open(download_list_file, 'w', newline='') as csvfile:
-    dwriter = csv.writer(csvfile, delimiter='|')
-    for accession_no, url in download_list:
-        dwriter.writerow([accession_no, url])
-
+df.close()
 
 
