@@ -1,31 +1,60 @@
-"""
+import glob, os
+import logging
+from logging.config import dictConfig
+from datetime import datetime
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import exc
+
+logging_config = dict(
+    version = 1,
+    formatters = {
+        'f': {'format':
+              '%(asctime)s - %(name)s - %(levelname)s - %(message)s'}
+        },
+    handlers = {
+        'fh': {'class': 'logging.FileHandler',
+               'formatter': 'f',
+               'level': logging.INFO,
+               'filename': 'logger.log'},
+        'ch': {'class': 'logging.StreamHandler',
+               'formatter': 'f',
+               'level': logging.INFO}
+        },
+    root = {
+        'handlers': ['fh', 'ch'],
+            'level': logging.INFO,
+        }
+)
+
+dictConfig(logging_config)
+
+# create logger
+logger = logging.getLogger("index_to_db.init_db")
+
 DB_USERNAME = 'edgar_user'
 DB_PASSWORD = 'edgar_password'
-DB_HOST = '52.37.185.37'
+DB_HOST = '34.219.152.31'
 DB_PORT = '3306'
 DB_NAME = 'edgar_db'
 
 SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
 Session = sessionmaker(bind=engine)
 session = Session()
-rs = session.execute('SELECT * FROM test;')
-for row in rs:
-    print(row)
-"""
-import glob, os
-from datetime import datetime
-
 
 # source = '/data2/filing_index'
 source = '../edgar_data_download/data/filings'
-download_list_file = 'download_list.csv'
 
-df = open(download_list_file, 'a')
+def clean(entry):
+    entry = entry.strip()
+    if "\\" in entry:
+        entry = entry.replace("\\", "\\\\")
+    if "'" in entry:
+        entry = entry.replace("'", "''")
+    return entry
 
 for f in glob.glob(source + '/*.idx'):
     filename = os.path.basename(f)
@@ -37,12 +66,13 @@ for f in glob.glob(source + '/*.idx'):
 
         lines = data.split('\n')
         lines = lines[7:] # Skip first 7 lines of header
-
+        cnt = 0
         for line in lines:
             data = line.strip().split("|")
             if len(data) == 5:
                 for i, elem in enumerate(data):
-                    data[i] = elem.strip()
+                    data[i] = clean(elem)
+
                 try:
                     data[3] = datetime.strptime(data[3], "%Y%m%d")
                 except ValueError:
@@ -54,9 +84,19 @@ for f in glob.glob(source + '/*.idx'):
                 url = 'https://www.sec.gov/Archives/'+filing_content
 
                 # write cik, company_name, form_type, date_filed, assession_no, url to database
+                sql = f"INSERT INTO filing_index (cik, company_name, form_type, date_filed, accession_number, url) "\
+                    f"VALUES('{cik}', '{company_name}', '{form_type}', '{date_filed.strftime('%Y-%m-%d')}', '{accession_no}', "\
+                    f"'{url}');"
 
-                df.write(accession_no+'|'+url+'\n')
+                try:
+                    session.execute(sql)
+                    session.commit()
+                except exc.SQLAlchemyError:
+                    logger.error(f"Failed to insert line: {line}")
 
-df.close()
+                cnt += 1
+    print(f"Processed {cnt} records in {f}")
+
+session.close()
 
 
