@@ -95,7 +95,7 @@ for f in glob.glob(source + '/*.idx'):
                     logger.error(f"Failed to insert line: {line}")
 
                 cnt += 1
-    print(f"Processed {cnt} records in {f}")
+    logger.info(f"Processed {cnt} records in {f}")
 
 session.close()
 
