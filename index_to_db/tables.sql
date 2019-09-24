@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS filing_index;
 CREATE TABLE filing_index(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     cik VARCHAR(20),

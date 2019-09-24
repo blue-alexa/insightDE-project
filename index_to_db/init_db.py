@@ -47,7 +47,14 @@ session = Session()
 
 # source = '/data2/filing_index'
 source = '../edgar_data_download/data/filings'
+processed = '/data2/processed_index.txt'
+processed_idx = []
+with open(processed, 'r') as f:
+    for line in f:
+        processed_idx.append(line.strip().split("records in ")[-1])
 
+print(processed_idx)
+"""
 def clean(entry):
     entry = entry.strip()
     if "\\" in entry:
@@ -76,7 +83,7 @@ for f in glob.glob(source + '/*.idx'):
                 try:
                     data[3] = datetime.strptime(data[3], "%Y%m%d")
                 except ValueError:
-                    print(line)
+                    logger.error(f"Failed to process time in line: {line}")
                     data[3] = datetime.strptime(doc_date, "%Y%m%d")
 
                 cik, company_name, form_type, date_filed, filing_content = data
@@ -98,5 +105,5 @@ for f in glob.glob(source + '/*.idx'):
     logger.info(f"Processed {cnt} records in {f}")
 
 session.close()
-
+"""
 
