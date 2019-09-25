@@ -53,8 +53,8 @@ with open(processed, 'r') as f:
     for line in f:
         processed_idx.append(line.strip().split("records in ")[-1])
 
-print(processed_idx)
-"""
+# print(processed_idx)
+
 def clean(entry):
     entry = entry.strip()
     if "\\" in entry:
@@ -64,6 +64,8 @@ def clean(entry):
     return entry
 
 for f in glob.glob(source + '/*.idx'):
+    if f in processed_idx:
+        continue
     filename = os.path.basename(f)
     doc_date = filename.split('.')[1]
     print(f"Processing file {f}")
@@ -105,5 +107,8 @@ for f in glob.glob(source + '/*.idx'):
     logger.info(f"Processed {cnt} records in {f}")
 
 session.close()
+"""
+1393018|Ing International (II) Senior Bank :Loans USD|REGDEX|20070308|edgar/data/1393018/9999999997-07-014227.txt
+1393018|Ing International (II) Senior Bank :Loans USD|REGDEX|20070308|edgar/data/1393018/9999999997-07-011714.txt
 """
 

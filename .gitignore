@@ -4,4 +4,4 @@
 __pycache__
 data
 raw_data
-logger.log
+*.log
