@@ -80,3 +80,4 @@ class IndexAPI(Resource):
 
     # http://localhost:5000/index?cik=320193&form_type=10-Q
     # http://localhost:5000/index?cik=320193&form_type=10-Q&period2=20100101
+    # curl localhost:5000/index?cik=320193&form_type=10-Q&period2=20100101

@@ -43,6 +43,12 @@ doc_pattern = '<XML>(.*?)</XML>'
 source = '../edgar_data_download/data/thirteenF'
 target_folder = '../edgar_data_download/data/thirteenF_json'
 test = os.path.join(source, '0001172661-19-000001.txt')
+test = os.path.join(source, '0000714364-19-000001.txt')
+
+test_json = os.path.join(target_folder, '0001172661-19-000001.txt')
+test_json = os.path.join(target_folder, '0000714364-19-000001.txt')
+
+
 
 def parse_xml_to_json(filepath, target_folder):
     result = {}
@@ -68,11 +74,22 @@ def parse_xml_to_json(filepath, target_folder):
 
     target_file = os.path.join(target_folder, filename)
     with open(target_file, "w") as jsonfile:
-        json.dump(result, jsonfile)
+        json_string = json.dumps(result)
+        json_string = json_string.replace('"ns1:', '"') # clean up namespace tag if exists
+        jsonfile.write(json_string)
+
+        # json.dump(result, jsonfile)
         logger.info(f"Saved json to {target_file}")
 
 for f in glob.glob(source + '/*.txt'):
     parse_xml_to_json(f, target_folder)
+
+####### pretty print json data ##############
+# with open(test_json, 'r') as f:
+#     data = f.read()
+# data = data.replace('"ns1:', '"') # remove namespace
+# json_data = json.loads(data)
+# print(json.dumps(json_data, indent=4, sort_keys=True))
 
 """
 from lxml import etree
