@@ -30,9 +30,9 @@ def download_parse_insert(url):
         return
 
     content = content.decode('ISO-8859-1')
-    parser = parser.ThirteenFHRParser()
+    p = parser.ThirteenFHRParser()
     try:
-        data = parser.parse(content, id)
+        data = p.parse(content, id)
         logger.info(f"Parsed form {id}")
     except Exception:
         logger.error(f"Failed to parse form {id}")
