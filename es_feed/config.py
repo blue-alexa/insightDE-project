@@ -2,16 +2,16 @@ import logging
 
 DB_USERNAME = 'edgar_user'
 DB_PASSWORD = 'edgar_password'
-DB_HOST = '52.35.91.126'
+DB_HOST = '34.219.66.172'
 DB_PORT = '3306'
 DB_NAME = 'edgar_db'
 
 SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
-ELASTIC_IP = '10.0.0.10'
-ELASTIC_HOST = '9200'
+ELASTIC_HOST = '10.0.0.10'
+ELASTIC_PORT = '9200'
 
-ELASTIC_URI = f"{ELASTIC_IP}:{ELASTIC_HOST}"
+ELASTIC_URI = f"{ELASTIC_HOST}:{ELASTIC_PORT}"
 
 logging_config = dict(
     version = 1,
@@ -33,3 +33,8 @@ logging_config = dict(
             'level': logging.INFO,
         }
 )
+RABBITMQ_USER = 'rabbitmq'
+RABBITMQ_PASS = 'rabbitmq'
+RABBITMQ_HOST = '10.0.0.14'
+
+CELERY_BROKER_URL = f"amqp://{RABBITMQ_USER}:{RABBITMQ_PASS}@{RABBITMQ_HOST}//"

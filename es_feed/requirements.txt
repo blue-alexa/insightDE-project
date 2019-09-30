@@ -1,0 +1,4 @@
+requests
+lxml
+celery
+elasticsearch

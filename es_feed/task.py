@@ -1,16 +1,46 @@
+import celery
+from celery.utils.log import get_task_logger
+
+from config import CELERY_BROKER_URL
+
+app = celery.Celery('task',
+                    broker=CELERY_BROKER_URL,
+                    backend=CELERY_BROKER_URL)
+
+logger = get_task_logger(__name__)
+
+@app.task
 def download_parse_insert(url):
     from downloader import download
     from parser import ThirteenFHRParser
     from es_loader import ESLoader
 
     id = url.split("/")[-1].split(".")[0]
-    content = download(url)
+    try:
+        content = download(url)
+        logger.info(f"Downloaded form {id}")
+    except Exception:
+        logger.error(f"Failed to download from {url}")
+        return
+
+    content = content.decode('ISO-8859-1')
     parser = ThirteenFHRParser()
-    data = parser.parse(content, id)
-    print(data)
+    try:
+        data = parser.parse(content, id)
+        logger.info(f"Parsed form {id}")
+    except Exception:
+        logger.error(f"Failed to parse form {id}")
+        return
+
     loader = ESLoader()
     index_name = "13f-hr"
     type_name = "form"
-    loader.insert(index_name, type_name, id, data)
+    try:
+        loader.insert(index_name, type_name, id, data)
+        logger.info(f"Inserted form {id} to elasticsearch")
+    except Exception:
+        logger.error(f"Failed to insert form {id} to elasticsearch")
+
+# celery -A task worker --loglevel=info --logfile=celery_log.log
 
 
