@@ -1,6 +1,0 @@
-DROP TABLE IF EXISTS parsers;
-CREATE TABLE parsers(
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50),
-    code TEXT
-);
