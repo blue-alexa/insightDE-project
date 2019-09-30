@@ -63,6 +63,9 @@ class ESLoader(object):
         self.logger = logging.getLogger("es_feed.es_loader")
 
     def create_mapping(self, index_name, type_name, mapping):
+        # remove index if exist
+        if self.conn.indices.exists(index_name):
+            self.conn.indices.delete(index_name)
         self.conn.indices.put_mapping(index=index_name, doc_type=type_name, body=mapping)
         self.logger.info(f"Mapping created {mapping}")
 
