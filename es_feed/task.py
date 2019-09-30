@@ -46,6 +46,6 @@ def download_parse_insert(url):
     except Exception:
         logger.error(f"Failed to insert form {id} to elasticsearch")
 
-# celery -A task worker --loglevel=info --f celery_log.log
+# celery -A task worker --loglevel=info --logfile=celery_log.log
 
 

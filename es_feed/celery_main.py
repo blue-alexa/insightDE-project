@@ -17,5 +17,5 @@ filingIndex = FilingIndex(db_conn)
 urls = filingIndex.get_url('13F-HR', start='2019-01-01')
 
 tasks = []
-for url in urls[:5]:
+for url in urls:
     tasks.append(download_parse_insert.delay(url))
