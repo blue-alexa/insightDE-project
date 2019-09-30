@@ -18,7 +18,7 @@ sys.path.append(os.getcwd())
 @app.task
 def download_parse_insert(url):
     downloader = importlib.import_module('downloader')
-    parser = importlib.import_module('parser')
+    ThirteenFHRParser = getattr(importlib.import_module('parser'), 'ThirteenFHRParser')
     es_loader = importlib.import_module('es_loader')
 
     id = url.split("/")[-1].split(".")[0]
@@ -30,9 +30,9 @@ def download_parse_insert(url):
         return
 
     content = content.decode('ISO-8859-1')
-    p = parser.ThirteenFHRParser()
+    parser = ThirteenFHRParser()
     try:
-        data = p.parse(content, id)
+        data = parser.parse(content, id)
         logger.info(f"Parsed form {id}")
     except Exception:
         logger.error(f"Failed to parse form {id}")
