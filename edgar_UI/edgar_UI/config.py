@@ -11,4 +11,9 @@ class DevConfig(Config):
 
     SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
+    ELASTIC_HOST = '10.0.0.10'
+    ELASTIC_PORT = '9200'
+
+    ELASTIC_URI = f"{ELASTIC_HOST}:{ELASTIC_PORT}"
+
     DEBUG = True
