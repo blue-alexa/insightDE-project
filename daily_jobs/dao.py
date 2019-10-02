@@ -65,7 +65,7 @@ class FormParser(object):
 
     def insert_parser(self, form_type, code):
         today_str = datetime.today().strftime('%Y-%m-%d')
-        sql = f"INSERT INTO form_parser(form_type, code, date_created, date_modified) VALUES('{form_type}'," \
-                f" '{code}', '{today_str}', '{today_str}') ON DUPLICATE KEY UPDATE code='{code}', date_modified='{today_str}';"
+        sql = f"""INSERT INTO form_parser(form_type, code, date_created, date_modified) VALUES('{form_type}',
+                "{code}", '{today_str}', '{today_str}') ON DUPLICATE KEY UPDATE code="{code}", date_modified='{today_str}';"""
         self.conn.execute(sql)
         self.conn.commit()
