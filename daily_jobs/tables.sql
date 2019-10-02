@@ -8,7 +8,7 @@ CREATE TABLE history(
 DROP TABLE IF EXISTS form_parsers;
 CREATE TABLE form_parsers(
     form_type VARCHAR(30) PRIMARY KEY,
-    code TEXT,
+    code BLOB,
     date_created DATE,
     date_modified DATE
 );
