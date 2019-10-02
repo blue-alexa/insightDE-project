@@ -18,11 +18,11 @@ class EdgarFilingParser(object):
 
             if "CONFORMED PERIOD OF REPORT:" in line:
                 report_date = line.split(":")[1].strip()
-                report_date = report_date[:4]+'-'+report_date[4:6]+'-'+report_date[6:] #date format YYYY-MM-DD
+                report_date = report_date[0:4]+'-'+report_date[4:6]+'-'+report_date[6:8] #date format YYYY-MM-DD
 
             if "FILED AS OF DATE:" in line:
                 file_date = line.split(":")[1].strip()
-                file_date = file_date[:4]+'-'+file_date[4:6]+'-'+file_date[6:]
+                file_date = file_date[0:4]+'-'+file_date[4:6]+'-'+file_date[6:8]
 
             if "CENTRAL INDEX KEY:" in line:
                 cik = line.split(":")[1].strip()
