@@ -3,7 +3,7 @@ from dao import FormParser
 sample_parser = "edgar_parser_sample.py"
 form_type = '13f-hr'
 
-with open(sample_parser) as f:
+with open(sample_parser, 'rb') as f:
     data = f.read()
 
 form_parser = FormParser()
