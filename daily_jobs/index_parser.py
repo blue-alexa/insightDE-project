@@ -1,8 +1,6 @@
 import logging
 from datetime import datetime
 
-logger = logging.getLogger("index_to_db.init_db")
-
 class IndexParser(object):
     def __init__(self):
         self.logger = logging.getLogger("daily_jobs.edgar_parsers")
@@ -34,7 +32,7 @@ class IndexParser(object):
                 try:
                     data[3] = datetime.strptime(data[3], "%Y%m%d")
                 except ValueError:
-                    logger.error(f"Failed to process time in line: {line}")
+                    self.logger.error(f"Failed to process time in line: {line}")
                     data[3] = datetime.strptime(download_date, "%Y%m%d")
 
                 cik, company_name, form_type, date_filed, filing_content = data
