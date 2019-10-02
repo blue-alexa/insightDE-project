@@ -2,7 +2,7 @@ import logging
 
 DB_USERNAME = 'edgar_user'
 DB_PASSWORD = 'edgar_password'
-DB_HOST = '10.0.0.11'
+DB_HOST = '54.201.121.30'
 DB_PORT = '3306'
 DB_NAME = 'edgar_db'
 
