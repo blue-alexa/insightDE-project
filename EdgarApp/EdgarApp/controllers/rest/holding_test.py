@@ -98,8 +98,8 @@ res = es.search(index_name, {
                     {
                         "range" : {
                             "file_date" : {
-                                "gte": "20190101",
-                                "lte": "20190110"
+                                "gte": "2019-01-01",
+                                "lte": "2019-10-10"
                             }
                         }
                     },

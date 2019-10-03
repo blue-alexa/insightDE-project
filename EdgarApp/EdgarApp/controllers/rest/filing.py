@@ -42,9 +42,13 @@ class FilingAPI(Resource):
 
         dao = ES_ThirteenFHR_DAO()
         if not start:
-            start = '20190101'
+            start = '2019-01-01'
+        else:
+            start = start[:4] + "-" + start[4:6] + "-" + start[6:]
+
         if not end:
-            end = datetime.today().strftime("%Y%m%d")
+            end = datetime.today().strftime("%Y-%m-%d")
+            end = end[:4] + "-" + end[4:6] + "-" + end[6:]
 
         index_name = '13f-hr'
         result = {}
@@ -67,5 +71,7 @@ class FilingAPI(Resource):
         abort(400)
 
     # http://localhost:5000/filing_search?cusip=N14506104&start=20100101&end=20191001
+
+    # curl 10.0.0.7:5000/filing_search?cusip=N14506104&start=20100101&end=20191001
 
 
