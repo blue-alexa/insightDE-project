@@ -48,6 +48,7 @@ class FilingAPI(Resource):
 
         if not end:
             end = datetime.today().strftime("%Y-%m-%d")
+        else:
             end = end[:4] + "-" + end[4:6] + "-" + end[6:]
 
         print(f"start: {start}, end: {end}, cik: {cik}, cusip: {cusip}")
