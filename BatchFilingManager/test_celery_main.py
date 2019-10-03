@@ -15,4 +15,4 @@ logger.info(f"Starting retrieve urls from database")
 
 form_type = '13F-HR'
 url = ""
-download_parse_insert(url, form_type)
+download_parse_insert.delay(url, form_type)

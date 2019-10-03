@@ -19,7 +19,7 @@ sys.path.append(os.getcwd())
 def download_parse_insert(url, form_type):
     # check if form parser is available
     parser_name = f"FormParser_{form_type.replace('-', '_')}"
-    parser_path = os.path.join("../parsers", parser_name)
+    parser_path = os.path.join("parsers", parser_name)
     logger.info(f"parser_name is {parser_name}")
     logger.info(f"parser_path is {parser_path}")
     if not os.path.exists(parser_path):
