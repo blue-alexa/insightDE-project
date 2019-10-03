@@ -50,6 +50,8 @@ class FilingAPI(Resource):
             end = datetime.today().strftime("%Y-%m-%d")
             end = end[:4] + "-" + end[4:6] + "-" + end[6:]
 
+        print(f"start: {start}, end: {end}, cik: {cik}, cusip: {cusip}")
+
         index_name = '13f-hr'
         result = {}
 
