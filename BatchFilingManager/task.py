@@ -19,17 +19,14 @@ sys.path.append(os.getcwd())
 def download_parse_insert(url, form_type):
     # check if form parser is available
     parser_name = f"FormParser_{form_type.replace('-', '_')}"
-    parser_path = os.path.join(os.getcwd(), "parsers", parser_name)
-    logger.info(f"parser_name is {parser_name}")
-    logger.info(f"parser_path is {parser_path}")
-    # if not os.path.exists(parser_path):
-    #     logger.error(f"Failed to loader form parser for {form_type}")
-    #     return
     parser_module = f'parsers.{parser_name}'
+    logger.info(f"parser_name is {parser_name}")
     logger.info(f"parser_module is {parser_module}")
-    importlib.import_module(parser_module)
-    FormParser = getattr(importlib.import_module(parser_module), parser_name)
-    logger.info(f"Access {FormParser.doc_pattern}")
+    try:
+        FormParser = getattr(importlib.import_module(parser_module), parser_name)
+    except ModuleNotFoundError:
+        logger.error(f"Failed to loader form parser for {form_type}")
+        return
     """
     # import downloader and esloader
     downloader = importlib.import_module('downloader')
