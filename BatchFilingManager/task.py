@@ -17,6 +17,8 @@ sys.path.append(os.getcwd())
 
 @app.task
 def download_parse_insert(url, form_type):
+    batch_manager = importlib.import_module("BatchFilingManager")
+    logger.info(f"{batch_manager.__dict__}")
     # check if form parser is available
     parser_name = f"FormParser_{form_type.replace('-', '_')}"
     parser_path = os.path.join(os.getcwd(), "parsers", parser_name)
