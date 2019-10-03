@@ -5,10 +5,3 @@ CREATE TABLE history(
     date_modified DATE
 );
 
-DROP TABLE IF EXISTS form_parsers;
-CREATE TABLE form_parsers(
-    form_type VARCHAR(30) PRIMARY KEY,
-    code BLOB,
-    date_created DATE,
-    date_modified DATE
-);

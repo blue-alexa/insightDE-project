@@ -10,7 +10,7 @@ from celery.utils.log import get_task_logger
 
 from config import CELERY_BROKER_URL
 
-app = celery.Celery('task',
+app = celery.Celery('tasks',
                     broker=CELERY_BROKER_URL)
 
 logger = get_task_logger(__name__)
@@ -46,13 +46,14 @@ def daily_job():
     for record in records:
         cik, company_name, form_type, date_filed, accession_no, url = record
 
-        # Check if FormParser exists in the parsers folder
+        # check if form parser is available
         parser_name = f"FormParser_{form_type.replace('-', '_')}"
-        parser_path = os.path.join("../parsers", parser_name)
-        if not os.path.exists(parser_path):
-            continue
         parser_module = f'parsers.{parser_name}'
-        FormParser = getattr(importlib.import_module(parser_module), parser_name)
+        try:
+            FormParser = getattr(importlib.import_module(parser_module), parser_name)
+        except ModuleNotFoundError:
+            logger.error(f"Failed to loader form parser for {form_type}")
+            return
 
         # Download form from SEC
         form_content = downloader.download(url)
@@ -73,12 +74,13 @@ def daily_job():
         except Exception:
             logger.error(f"Failed to insert {form_type} form {accession_no} to elasticsearch")
 
-
     history_dao = HistoryDAO()
     history_dao.insert_history(download_date)
 
 
-
+@app.task
+def test_log_time():
+    logger.info(f"{datetime.now()}")
 
 
 
