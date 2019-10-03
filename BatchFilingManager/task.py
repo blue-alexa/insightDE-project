@@ -20,14 +20,12 @@ def download_parse_insert(url, form_type):
     # check if form parser is available
     parser_name = f"FormParser_{form_type.replace('-', '_')}"
     parser_module = f'parsers.{parser_name}'
-    logger.info(f"parser_name is {parser_name}")
-    logger.info(f"parser_module is {parser_module}")
     try:
         FormParser = getattr(importlib.import_module(parser_module), parser_name)
     except ModuleNotFoundError:
         logger.error(f"Failed to loader form parser for {form_type}")
         return
-    """
+
     # import downloader and esloader
     downloader = importlib.import_module('downloader')
     ESLoader = getattr(importlib.import_module('es_loader'), 'ESLoader')
@@ -56,6 +54,6 @@ def download_parse_insert(url, form_type):
         logger.info(f"Inserted form {accession_no} to elasticsearch")
     except Exception:
         logger.error(f"Failed to insert form {accession_no} to elasticsearch")
-    """
+
 # celery -A task worker --loglevel=info --logfile=celery_log.log
 
