@@ -8,7 +8,7 @@ import celery
 
 from celery.utils.log import get_task_logger
 
-from config import CELERY_BROKER_URL
+from config import CELERY_BROKER_URL, local_timezone
 
 app = celery.Celery('tasks',
                     broker=CELERY_BROKER_URL)
@@ -26,7 +26,8 @@ def daily_job():
     ESLoader = getattr(importlib.import_module('es_loader'), 'ESLoader')
 
     # Retrieve filing index doc from SEC website
-    download_date = datetime.today()
+    download_date = local_timezone.localize(datetime.today())
+
     index_file_content = downloader.download_index(download_date)
     if not index_file_content:
         return
@@ -81,6 +82,8 @@ def daily_job():
 @app.task
 def test_log_time():
     logger.info(f"get time now: {datetime.now()}")
+
+# celery -A tasks worker --loglevel=info
 
 
 

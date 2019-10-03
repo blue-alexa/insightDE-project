@@ -1,4 +1,3 @@
-import base64
 import logging
 from datetime import datetime
 
@@ -6,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import exc
 
-from config import SQLALCHEMY_DATABASE_URI
+from config import SQLALCHEMY_DATABASE_URI, local_timezone
 
 def get_db_conn():
     engine = create_engine(SQLALCHEMY_DATABASE_URI)
@@ -36,7 +35,7 @@ class HistoryDAO(object):
         self.logger = logging.getLogger("DailyJobs.dao.history")
 
     def insert_history(self, download_date):
-        today_str = datetime.today().strftime('%Y-%m-%d')
+        today_str = local_timezone.localize(datetime.today()).strftime('%Y-%m-%d')
         download_date_str = download_date.strftime('%Y-%m-%d')
         sql = f"INSERT INTO history(download_date, date_created, date_modified) VALUES('{download_date_str}'," \
                   f" '{today_str}', '{today_str}') ON DUPLICATE KEY UPDATE date_modified='{today_str}';"

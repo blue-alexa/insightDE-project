@@ -1,4 +1,5 @@
 import logging
+from pytz import timezone
 
 DB_USERNAME = 'edgar_user'
 DB_PASSWORD = 'edgar_password'
@@ -38,3 +39,5 @@ RABBITMQ_PASS = 'rabbitmq'
 RABBITMQ_HOST = '10.0.0.14'
 
 CELERY_BROKER_URL = f"amqp://{RABBITMQ_USER}:{RABBITMQ_PASS}@{RABBITMQ_HOST}//"
+
+local_timezone = timezone('US/Pacific')

@@ -10,3 +10,5 @@ app.conf.beat_schedule = {
 }
 
 app.conf.timezone = 'US/Pacific'
+
+# celery -A test_celery_schedule beat --loglevel=info
