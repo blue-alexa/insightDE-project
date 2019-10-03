@@ -80,7 +80,7 @@ def daily_job():
 
 @app.task
 def test_log_time():
-    logger.info(f"{datetime.now()}")
+    logger.info(f"get time now: {datetime.now()}")
 
 
 
