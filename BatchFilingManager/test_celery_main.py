@@ -13,6 +13,6 @@ logger = logging.getLogger("BatchFilingManager.main")
 # retrieve url from database
 logger.info(f"Starting retrieve urls from database")
 
-form_type = '13F-HR'
+form_type = '14F'
 url = ""
 download_parse_insert.delay(url, form_type)
