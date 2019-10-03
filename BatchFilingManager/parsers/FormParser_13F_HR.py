@@ -3,12 +3,12 @@ import logging
 
 from lxml import etree
 
-class EdgarFilingParser(object):
+class FormParser_13F_HR(object):
     header_pattern = '<SEC-HEADER>(.*?)</SEC-HEADER>'
     doc_pattern = '<XML>(.*?)</XML>'
 
     def __init__(self):
-        self.logger = logging.getLogger("es_feed.thirteenF_parser")
+        self.logger = logging.getLogger("BatchFilingManager.FormParser_13F_HR")
 
     def _get_header_info(self, header):
         lines = header.split("\n")
@@ -30,6 +30,11 @@ class EdgarFilingParser(object):
         return {'company_name': company_name, 'report_date': report_date, 'file_date': file_date, 'cik': cik}
 
     def _get_holding_info(self, data):
+        """
+        Extracting positions info from 13F
+        :param data:
+        :return:
+        """
         holdings = []
         docs = re.findall(self.doc_pattern, data, re.DOTALL)
         for doc in docs:
@@ -68,6 +73,11 @@ class EdgarFilingParser(object):
         return holdings
 
     def parse(self, source, source_name):
+        """
+        :param source: xml file
+        :param source_name: string, any name, could be accession_no or url, for logging purpose
+        :return: json object for elastic search to load, one xml document generate one json object
+        """
         self.source = source
         self.source_name = source_name
         entry = {}
@@ -83,7 +93,7 @@ class EdgarFilingParser(object):
         entry.update(header)
         if holdings:
             entry.update({"holdings": holdings})
-            self.logger.info(f"Successfully retrieve {self.source_name}")
+            self.logger.info(f"Successfully retrieve holding information from {self.source_name}")
         else:
             self.logger.error(f"Can not find holding information in {self.source_name}")
             return

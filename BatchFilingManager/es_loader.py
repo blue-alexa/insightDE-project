@@ -6,7 +6,7 @@ from config import ELASTIC_URI
 class ESLoader(object):
     def __init__(self):
         self.conn = elasticsearch.Elasticsearch([ELASTIC_URI])
-        self.logger = logging.getLogger("es_feed.es_loader")
+        self.logger = logging.getLogger("BatchFilingManager.es_loader")
 
     def create_mapping(self, index_name, type_name, mapping):
         # remove index if exist

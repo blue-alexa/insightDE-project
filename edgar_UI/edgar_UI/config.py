@@ -5,7 +5,7 @@ class Config(object):
 class DevConfig(Config):
     DB_USERNAME = 'edgar_user'
     DB_PASSWORD = 'edgar_password'
-    DB_HOST = '34.219.152.31'
+    DB_HOST = '10.0.0.4'
     DB_PORT = '3306'
     DB_NAME = 'edgar_db'
 
@@ -14,6 +14,6 @@ class DevConfig(Config):
     ELASTIC_HOST = '10.0.0.10'
     ELASTIC_PORT = '9200'
 
-    ELASTIC_URI = f"{ELASTIC_HOST}:{ELASTIC_PORT}"
+    ELASTIC_URI = [f"{ELASTIC_HOST}:{ELASTIC_PORT}"]
 
     DEBUG = True

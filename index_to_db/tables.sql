@@ -11,6 +11,8 @@ CREATE TABLE filing_index(
 
 CREATE INDEX date_index ON filing_index (date_filed);
 
+CREATE INDEX formtype_index ON filing_index (form_type);
+
 CREATE INDEX cik_form_index ON filing_index (cik, form_type);
 
 CREATE INDEX accession_no_index ON filing_index (accession_number);

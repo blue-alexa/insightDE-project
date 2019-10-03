@@ -8,7 +8,7 @@ class ThirteenFHRParser(object):
     doc_pattern = '<XML>(.*?)</XML>'
 
     def __init__(self):
-        self.logger = logging.getLogger("es_feed.thirteenF_parser")
+        self.logger = logging.getLogger("BatchFilingManager.thirteenF_parser")
 
     def _get_header_info(self, header):
         lines = header.split("\n")
@@ -18,9 +18,11 @@ class ThirteenFHRParser(object):
 
             if "CONFORMED PERIOD OF REPORT:" in line:
                 report_date = line.split(":")[1].strip()
+                report_date = report_date[:4]+'-'+report_date[4:6]+'-'+report_date[6:] #date format YYYY-MM-DD
 
             if "FILED AS OF DATE:" in line:
                 file_date = line.split(":")[1].strip()
+                file_date = file_date[:4]+'-'+file_date[4:6]+'-'+file_date[6:]
 
             if "CENTRAL INDEX KEY:" in line:
                 cik = line.split(":")[1].strip()

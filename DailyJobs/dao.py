@@ -1,3 +1,4 @@
+import base64
 import logging
 from datetime import datetime
 
@@ -13,10 +14,10 @@ def get_db_conn():
     session = Session()
     return session
 
-class FilingIndex(object):
+class FilingIndexDAO(object):
     def __init__(self):
         self.conn = get_db_conn()
-        self.logger = logging.getLogger("daily_jobs.dao.filing_index")
+        self.logger = logging.getLogger("DailyJobs.dao.filing_index")
 
     def bulk_insert(self, records):
         for record in records:
@@ -29,10 +30,10 @@ class FilingIndex(object):
             except exc.SQLAlchemyError:
                 self.logger.error(f"Failed to insert line: {record}")
 
-class History(object):
+class HistoryDAO(object):
     def __init__(self):
         self.conn = get_db_conn()
-        self.logger = logging.getLogger("daily_jobs.dao.history")
+        self.logger = logging.getLogger("DailyJobs.dao.history")
 
     def insert_history(self, download_date):
         today_str = datetime.today().strftime('%Y-%m-%d')
@@ -50,22 +51,3 @@ class History(object):
         else:
             return None
 
-class FormParser(object):
-    def __init__(self):
-        self.conn = get_db_conn()
-        self.logger = logging.getLogger("daily_jobs.dao.form_parser")
-
-    def get_parser(self, form_type):
-        sql = f"SELECT code FROM form_parsers WHERE form_type='{form_type}';"
-        rs = self.conn.execute(sql).fetchone()
-        if rs:
-            return rs['code']
-        else:
-            return None
-
-    def insert_parser(self, form_type, code):
-        today_str = datetime.today().strftime('%Y-%m-%d')
-        sql = f"INSERT INTO form_parser(form_type, code, date_created, date_modified) VALUES('{form_type}', '{code}', " \
-            f"'{today_str}', '{today_str}') ON DUPLICATE KEY UPDATE code='{code}', date_modified='{today_str}';"
-        self.conn.execute(sql)
-        self.conn.commit()

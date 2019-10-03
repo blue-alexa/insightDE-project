@@ -28,7 +28,7 @@ logging_config = dict(
 dictConfig(logging_config)
 
 # create logger
-logger = logging.getLogger("es_feed.download_13F")
+logger = logging.getLogger("BatchFilingManager.download_13F")
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker

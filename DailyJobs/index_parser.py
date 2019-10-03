@@ -3,7 +3,7 @@ from datetime import datetime
 
 class IndexParser(object):
     def __init__(self):
-        self.logger = logging.getLogger("daily_jobs.edgar_parsers")
+        self.logger = logging.getLogger("DailyJobs.index_parser")
 
     def _clean(self, entry):
         entry = entry.strip()
@@ -18,6 +18,7 @@ class IndexParser(object):
         :param data: must be decoded to ISO-8859-1
         :param name:
         :return: list of tuples (cik, company_name, form_type, date_filed, accession_no, url)
+        (str, str, str, datetime, str, str)
         """
         records = []
         lines = data.split('\n')

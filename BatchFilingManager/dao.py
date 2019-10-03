@@ -11,10 +11,10 @@ def get_db_conn():
     session = Session()
     return session
 
-class FilingIndex(object):
-    def __init__(self, db_conn):
-        self.db_conn = db_conn
-        self.logger = logging.getLogger("es_feed.dao")
+class FilingIndexDAO(object):
+    def __init__(self):
+        self.db_conn = get_db_conn()
+        self.logger = logging.getLogger("BatchFilingManager.dao")
 
     def get_url(self, form_type, start=None, end=None):
         if not start:
