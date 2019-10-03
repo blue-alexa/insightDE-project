@@ -4,7 +4,7 @@ from flask import abort, jsonify
 
 from flask_restful import Resource, reqparse
 
-from edgar_UI.models import getconn
+from EdgarApp.models import getconn
 
 index_parser = reqparse.RequestParser()
 index_parser.add_argument(

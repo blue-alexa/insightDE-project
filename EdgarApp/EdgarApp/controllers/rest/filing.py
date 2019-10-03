@@ -4,7 +4,7 @@ from flask import abort, jsonify
 
 from flask_restful import Resource, reqparse
 
-from edgar_UI.es_dao import ES_ThirteenFHR_DAO
+from EdgarApp.es_dao import ES_ThirteenFHR_DAO
 
 filing_parser = reqparse.RequestParser()
 filing_parser.add_argument(

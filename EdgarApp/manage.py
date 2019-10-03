@@ -1,7 +1,7 @@
 from flask_script import Manager
-from edgar_UI import create_app
+from EdgarApp import create_app
 
-app = create_app('edgar_UI.config.DevConfig')
+app = create_app('EdgarApp.config.DevConfig')
 
 manager = Manager(app)
 
@@ -17,3 +17,5 @@ def make_shell_context():
 
 if __name__ == "__main__":
     manager.run()
+
+# python3 manage.py runserver -h 0.0.0.0 -p 5000

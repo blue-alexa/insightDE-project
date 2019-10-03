@@ -1,6 +1,6 @@
 import elasticsearch
 
-from edgar_UI.config import DevConfig
+from EdgarApp.config import DevConfig
 
 def get_es_conn():
     conn = elasticsearch.Elasticsearch(DevConfig.ELASTIC_URI)

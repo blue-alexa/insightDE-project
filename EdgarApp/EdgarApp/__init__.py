@@ -1,12 +1,12 @@
 from flask import Flask
 
-from edgar_UI.models import Index
-from edgar_UI.extensions import rest_api
+from EdgarApp.models import Index
+from EdgarApp.extensions import rest_api
 
-from edgar_UI.controllers.rest.f_index import IndexAPI
-from edgar_UI.controllers.rest.filing import FilingAPI
+from EdgarApp.controllers.rest.f_index import IndexAPI
+from EdgarApp.controllers.rest.filing import FilingAPI
 
-from edgar_UI.controllers.main import main_blueprint
+from EdgarApp.controllers.main import main_blueprint
 
 
 def create_app(config_object):

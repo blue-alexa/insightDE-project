@@ -6,7 +6,7 @@ from sqlalchemy import Column, Integer, String, Date, Index, DateTime, ForeignKe
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.pool import QueuePool
 
-from edgar_UI.config import DevConfig
+from EdgarApp.config import DevConfig
 
 engine = create_engine(DevConfig.SQLALCHEMY_DATABASE_URI, pool_size=20, max_overflow=0, poolclass=QueuePool)
 
