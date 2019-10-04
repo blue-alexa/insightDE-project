@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import abort, jsonify
+from flask import abort, jsonify, request
 
 from flask_restful import Resource, reqparse
 
@@ -35,6 +35,7 @@ index_parser.add_argument(
 class IndexAPI(Resource):
     def get(self):
         args = index_parser.parse_args()
+        print(request.args)
         print(args)
 
         cik = args['cik']
