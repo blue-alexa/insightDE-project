@@ -35,6 +35,7 @@ index_parser.add_argument(
 class IndexAPI(Resource):
     def get(self):
         args = index_parser.parse_args(strict=True)
+        print(args)
 
         cik = args['cik']
         form_type = args['form_type']
