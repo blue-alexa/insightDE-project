@@ -40,6 +40,8 @@ class FilingAPI(Resource):
         cik = args['cik']
         cusip = args['cusip']
 
+        print(f"start: {start}, end: {end}, cik: {cik}, cusip: {cusip}")
+
         dao = ES_ThirteenFHR_DAO()
         if not start:
             start = '2019-01-01'
@@ -74,7 +76,7 @@ class FilingAPI(Resource):
         abort(400)
 
 
-    # curl 10.0.0.7:5000/filing_search?cusip=N14506104&start=20190701&end=20191001
+    # curl 10.0.0.12:5000/filing_search?cusip=N14506104&start=20190701&end=20191001
 
     # http://35.160.70.126:5000/filing_search?cusip=N14506104&start=20190701&end=20191001
 

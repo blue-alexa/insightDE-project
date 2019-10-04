@@ -79,7 +79,7 @@ class IndexAPI(Resource):
 
 
     # http://minimind.club:5000/filing_index?cik=320193&form_type=10-Q&period2=20100101
-    # curl 10.0.0.7:5000/filing_index?cik=320193&form_type=10-Q&period2=20100101
+    # curl 10.0.0.12:5000/filing_index?cik=320193&form_type=10-Q&period2=20100101
     # curl http://35.160.70.126:5000/filing_index?cik=320193&form_type=10-Q&period2=20100101
 
 
