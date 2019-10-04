@@ -41,7 +41,7 @@ class IndexAPI(Resource):
         start = args['period1']
         end = args['period2']
 
-        print(f"start: {start}, end: {end}, cik: {cik}, cusip: {cusip}")
+        print(f"start: {start}, end: {end}, cik: {cik}")
 
         if start:
             start_date = datetime.strptime(start, "%Y%m%d").strftime("%Y-%m-%d")
@@ -53,7 +53,7 @@ class IndexAPI(Resource):
         else:
             end_date = datetime.today().strftime("%Y-%m-%d")
 
-        print(f"start: {start}, end: {end}, cik: {cik}, cusip: {cusip}")
+        print(f"start: {start}, end: {end}, cik: {cik}")
 
         session = getconn()
         rs = None
@@ -83,7 +83,7 @@ class IndexAPI(Resource):
 
 
     # http://minimind.club:5000/filing_index?cik=320193&form_type=10-Q&period2=20100101
-    # curl 10.0.0.12:5000/filing_index?cik=320193&form_type=10-Q&period2=20100101
+    # curl 10.0.0.13:5000/filing_index?cik=320193&form_type=10-Q&period2=20100101
     # curl http://35.160.70.126:5000/filing_index?cik=320193&form_type=10-Q&period2=20100101
 
 
