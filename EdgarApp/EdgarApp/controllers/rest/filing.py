@@ -73,8 +73,10 @@ class FilingAPI(Resource):
 
         abort(400)
 
-    # http://localhost:5000/filing_search?cusip=N14506104&start=20100101&end=20191001
 
-    # curl 10.0.0.7:5000/filing_search?cusip=N14506104&start=20100101&end=20191001
+    # curl 10.0.0.7:5000/filing_search?cusip=N14506104&start=20190701&end=20191001
+
+    # http://35.160.70.126:5000/filing_search?cusip=N14506104&start=20190701&end=20191001
+
 
 

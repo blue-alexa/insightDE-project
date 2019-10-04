@@ -8,7 +8,7 @@ from task import download_parse_insert
 dictConfig(logging_config)
 
 # create logger
-logger = logging.getLogger("BatchFilingManager.main")
+logger = logging.getLogger("BatchFilingManager.celery_main")
 
 # retrieve url from database
 logger.info(f"Starting retrieve urls from database")

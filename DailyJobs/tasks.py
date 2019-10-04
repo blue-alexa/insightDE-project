@@ -79,10 +79,6 @@ def daily_job():
     history_dao.insert_history(download_date)
 
 
-@app.task
-def test_log_time():
-    logger.info(f"get time now: {datetime.now()}")
-
 # celery -A tasks worker --loglevel=info
 
 
