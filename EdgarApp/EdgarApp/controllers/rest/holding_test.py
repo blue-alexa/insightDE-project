@@ -1,4 +1,4 @@
-# test elasticsearch results
+# tests elasticsearch results
 import elasticsearch
 from pprint import pprint
 es = elasticsearch.Elasticsearch(['10.0.0.10:9200'])

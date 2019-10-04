@@ -1,3 +1,5 @@
+SEC_QUERY_START_DATE = '2000-01-01'
+
 class Config(object):
     SECRET_KEY = 'SECRETKEYFOREDGARPROJECT'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -17,3 +19,4 @@ class DevConfig(Config):
     ELASTIC_URI = [f"{ELASTIC_HOST}:{ELASTIC_PORT}"]
 
     DEBUG = True
+

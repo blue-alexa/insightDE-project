@@ -4,7 +4,8 @@ from flask import abort, jsonify, request
 
 from flask_restful import Resource, reqparse
 
-from EdgarApp.models import getconn
+from EdgarApp.models import Index
+from EdgarApp.config import SEC_QUERY_START_DATE
 
 index_parser = reqparse.RequestParser()
 index_parser.add_argument(
@@ -35,51 +36,39 @@ index_parser.add_argument(
 class IndexAPI(Resource):
     def get(self):
         args = index_parser.parse_args()
-        print(request.args)
-        print(args)
 
         cik = args['cik']
         form_type = args['form_type']
         start = args['period1']
         end = args['period2']
 
-        print(f"start: {start}, end: {end}, cik: {cik}")
-
         if start:
             start_date = datetime.strptime(start, "%Y%m%d").strftime("%Y-%m-%d")
         else:
-            start_date = '2000-01-01'
+            start_date = SEC_QUERY_START_DATE
 
         if end:
             end_date = datetime.strptime(end, "%Y%m%d").strftime("%Y-%m-%d")
         else:
             end_date = datetime.today().strftime("%Y-%m-%d")
 
-        print(f"start: {start}, end: {end}, cik: {cik}")
-
-        session = getconn()
-        rs = None
+        index = Index()
+        data = {}
 
         if not cik and not form_type:
-            sql = f"SELECT * FROM filing_index WHERE date_filed >= '{start_date}' AND date_filed <= '{end_date}';"
-            rs = session.execute(sql).fetchall()
+            data = index.get_by_date_range(start_date, end_date)
 
         if cik and not form_type:
-            sql = f"SELECT * FROM filing_index WHERE cik='{cik}'AND date_filed >= '{start_date}' AND date_filed <= '{end_date}';"
-            rs = session.execute(sql).fetchall()
+            data = index.get_by_cik_and_date_range(cik, start_date, end_date)
 
         if not cik and form_type:
-            sql = f"SELECT * FROM filing_index WHERE form_type='{form_type}'AND date_filed >= '{start_date}' AND date_filed <= '{end_date}';"
-            rs = session.execute(sql).fetchall()
+            data = index.get_by_form_type_and_date_range(form_type, start_date, end_date)
 
         if cik and form_type:
-            sql = f"SELECT * FROM filing_index WHERE cik='{cik}'AND form_type='{form_type}'AND date_filed >= '{start_date}' AND date_filed <= '{end_date}';"
-            rs = session.execute(sql).fetchall()
+            data = index.get_by_cik_form_type_date_range(cik, form_type, start_date, end_date)
 
-        if rs:
-            data = [dict(row) for row in rs]
+        if data:
             return jsonify({'result': data})
-
 
         abort(400)
 
