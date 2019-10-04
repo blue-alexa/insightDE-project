@@ -7,17 +7,7 @@ from flask_restful import Resource, reqparse
 from EdgarApp.es_dao import ES_ThirteenFHR_DAO
 
 filing_parser = reqparse.RequestParser()
-filing_parser.add_argument(
-    'start',
-    type=str,
-    help='Start date of filing'
-)
 
-filing_parser.add_argument(
-    'end',
-    type=str,
-    help='End date of filing'
-)
 
 filing_parser.add_argument(
     'cik',
@@ -31,12 +21,24 @@ filing_parser.add_argument(
     help='CUSIP of 13F-HR holding'
 )
 
+filing_parser.add_argument(
+    'period1',
+    type=str,
+    help='Start date of filing, format YYYYMMDD'
+)
+
+filing_parser.add_argument(
+    'period2',
+    type=str,
+    help='End date of filing, format YYYYMMDD'
+)
+
 class FilingAPI(Resource):
     def get(self):
         args = filing_parser.parse_args(strict=True)
 
-        start = args['start']
-        end = args['end']
+        start = args['period1']
+        end = args['period2']
         cik = args['cik']
         cusip = args['cusip']
 

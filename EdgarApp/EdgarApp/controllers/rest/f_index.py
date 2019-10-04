@@ -41,6 +41,8 @@ class IndexAPI(Resource):
         start = args['period1']
         end = args['period2']
 
+        print(f"start: {start}, end: {end}, cik: {cik}, cusip: {cusip}")
+
         if start:
             start_date = datetime.strptime(start, "%Y%m%d").strftime("%Y-%m-%d")
         else:
@@ -50,6 +52,8 @@ class IndexAPI(Resource):
             end_date = datetime.strptime(end, "%Y%m%d").strftime("%Y-%m-%d")
         else:
             end_date = datetime.today().strftime("%Y-%m-%d")
+
+        print(f"start: {start}, end: {end}, cik: {cik}, cusip: {cusip}")
 
         session = getconn()
         rs = None
