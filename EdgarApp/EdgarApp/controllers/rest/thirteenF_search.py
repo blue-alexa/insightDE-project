@@ -80,7 +80,8 @@ class ThirteenFAPI(Resource):
                             'file_date': hit['_source']['file_date'],
                             'report_date': hit['_source']['report_date']
                             })
-
+            print(data)
+            print(res)
             return jsonify({'found_records': data['found_records'],
                             'result': res})
 
@@ -89,7 +90,7 @@ class ThirteenFAPI(Resource):
 
     # curl "http://10.0.0.13:5000/filing_search?cusip=N14506104&period1=20190701&period2=20191001"
 
-    # http://35.160.70.126:5000/filing_search?cusip=N14506104&start=20190701&end=20191001
+    # http://35.160.70.126:5000/13f_search?cusip=N14506104&period1=20190701&period2=20191001
 
 
 
