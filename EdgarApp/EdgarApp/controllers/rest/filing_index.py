@@ -1,11 +1,12 @@
 from datetime import datetime
 
-from flask import abort, jsonify, request
+from flask import abort, jsonify, request, Response
 
 from flask_restful import Resource, reqparse
 
 from EdgarApp.models import Index
 from EdgarApp.config import SEC_QUERY_START_DATE
+from EdgarApp.utils import gzip_response
 
 index_parser = reqparse.RequestParser()
 index_parser.add_argument(
@@ -68,7 +69,9 @@ class IndexAPI(Resource):
             data = index.get_by_cik_form_type_date_range(cik, form_type, start_date, end_date)
 
         if data:
-            return jsonify({'result': data})
+            content = gzip_response(data)
+            response = Response(content, mimetype='application/gzip')
+            return response
 
         abort(400)
 

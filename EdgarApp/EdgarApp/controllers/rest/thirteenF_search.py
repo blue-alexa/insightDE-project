@@ -73,17 +73,15 @@ class ThirteenFAPI(Resource):
         if data:
             res = []
             for i, hit in enumerate(data['result']):
-                res.append({'id': str(i),
+                res.append({
                             'accession_number': hit['_id'],
                             'cik': hit['_source']['cik'],
                             'company_name': hit['_source']['company_name'],
                             'file_date': hit['_source']['file_date'],
                             'report_date': hit['_source']['report_date']
                             })
-            print(data)
-            print(res)
-            return jsonify({'found_records': data['found_records'],
-                            'result': res})
+
+            return jsonify({'result': res})
 
         abort(400)
 
