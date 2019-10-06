@@ -181,6 +181,7 @@ class ES_ThirteenFHR_DAO(object):
                 }
             }
         })
-        return {'result': result['hits']['_source']}
+        print(result)
+        return {'result': result['hits']['hits'][0]['_source']}
 
 
