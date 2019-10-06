@@ -12,6 +12,35 @@ class ES_ThirteenFHR_DAO(object):
         self.size = 1000 # show first 1000 result
 
     def filter_date_range(self, index_name, start, end):
+        """
+        :param index_name:
+        :param start:
+        :param end:
+        :return: {'found_records': xxx,
+                  'result': [{'_index': xxx,
+                              '_type': xxx,
+                              '_id': xxx,
+                              '_score': xxx,
+                              '_source':{'company_name':xxx,
+                                        'report_date': xxx,
+                                        'file_date': xxx,
+                                        'cik': xxx,
+                                        'holdings': [
+                                            {
+                                            'nameOfIssuer':xxx,
+                                            'titleOfClass': xxx,
+                                            'cusip':xxx,
+                                            'value': xxx,
+                                            'shrsOrPrnAmt':
+                                                {'sshPrnamt': xxx,
+                                                'sshPrnamtType': xxx}
+                                            },
+                                            ...]
+                                        }
+                              },
+                              ...]
+                 }
+        """
         result = self.conn.search(index_name, {
             "query": {
                 "range": {
@@ -122,4 +151,36 @@ class ES_ThirteenFHR_DAO(object):
 
         return {'found_records': result['hits']['total'],
                 'result': result['hits']['hits']}
+
+    def filter_id(self, id, index_name):
+        """
+        :param id: accession_number (_id)
+        :param index_name: form type
+        :return: {'result':{'company_name':xxx,
+                            'report_date': xxx,
+                            'file_date': xxx,
+                            'cik': xxx,
+                            'holdings': [
+                                {
+                                'nameOfIssuer':xxx,
+                                'titleOfClass': xxx,
+                                'cusip':xxx,
+                                'value': xxx,
+                                'shrsOrPrnAmt':
+                                    {'sshPrnamt': xxx,
+                                    'sshPrnamtType': xxx}
+                                },
+                                ...]
+                            }
+                    }
+        """
+        result = self.conn.search(index_name, {
+            "query": {
+                "term": {
+                    "_id": f'{id}'
+                }
+            }
+        })
+        return {'result': result['hits']['_source']}
+
 

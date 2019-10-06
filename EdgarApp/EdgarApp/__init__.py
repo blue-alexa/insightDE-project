@@ -3,7 +3,8 @@ from flask import Flask
 from EdgarApp.models import Index
 from EdgarApp.extensions import rest_api
 
-from EdgarApp.controllers.rest.f_index import IndexAPI
+from EdgarApp.controllers.rest.filing_index import IndexAPI
+from EdgarApp.controllers.rest.thirteenF_search import ThirteenFAPI
 from EdgarApp.controllers.rest.filing import FilingAPI
 
 from EdgarApp.controllers.main import main_blueprint
@@ -14,7 +15,8 @@ def create_app(config_object):
     app.config.from_object(config_object)
 
     rest_api.add_resource(IndexAPI, '/filing_index')
-    rest_api.add_resource(FilingAPI, '/filing_search')
+    rest_api.add_resource(ThirteenFAPI, '/13f_search')
+    rest_api.add_resource(FilingAPI, '/filing')
     rest_api.init_app(app)
 
     app.register_blueprint(main_blueprint)

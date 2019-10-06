@@ -140,8 +140,8 @@ res = es.search(index_name, {
                     {
                         "range" : {
                             "file_date" : {
-                                "gte": "20190701",
-                                "lte": "20191010"
+                                "gte": "2019-07-01",
+                                "lte": "2019-10-10"
                             }
                         }
                     },
@@ -155,5 +155,12 @@ res = es.search(index_name, {
         }
 }, size=1000)
 
+result = es.search(index_name, {
+    "query": {
+        "term": {
+            "_id": '0001531971-19-000004'
+        }
+    }
+})
 
 
