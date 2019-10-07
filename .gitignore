@@ -6,6 +6,3 @@ data
 raw_data
 *.log
 EdgarUI
-BatchFilingManager
-BatchIndexManager
-DailyJobs

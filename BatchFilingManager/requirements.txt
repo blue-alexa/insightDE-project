@@ -1,6 +1,0 @@
-requests
-lxml
-celery
-elasticsearch
-sqlalchemy
-pymysql
