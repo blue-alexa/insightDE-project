@@ -1,12 +1,11 @@
 from datetime import datetime
 
-from flask import abort, jsonify, request
+from flask import abort, jsonify
 
 from flask_restful import Resource, reqparse
 
 from EdgarApp.models import Index
 from EdgarApp.config import SEC_QUERY_START_DATE
-from EdgarApp.utils import gzip_response
 
 index_parser = reqparse.RequestParser()
 index_parser.add_argument(
