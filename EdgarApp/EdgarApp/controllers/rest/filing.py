@@ -24,4 +24,3 @@ class FilingAPI(Resource):
         res = dao.filter_id(id, index_name)
         return jsonify(res)
 
-    # http://35.160.70.126:5000/filing?_id=0001531971-19-000004

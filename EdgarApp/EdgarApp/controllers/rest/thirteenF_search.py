@@ -86,9 +86,7 @@ class ThirteenFAPI(Resource):
         abort(400)
 
 
-    # curl "http://10.0.0.13:5000/filing_search?cusip=N14506104&period1=20190701&period2=20191001"
 
-    # http://35.160.70.126:5000/13f_search?cusip=N14506104&period1=20190701&period2=20191001
 
 
 
