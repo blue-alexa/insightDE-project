@@ -1,7 +1,7 @@
 # tests elasticsearch results
 import elasticsearch
 from pprint import pprint
-es = elasticsearch.Elasticsearch(['10.0.0.10:9200'])
+es = elasticsearch.Elasticsearch(['10.0.0.10:9200'], http_compress=True)
 index_name = '13f-hr'
 type_name = 'form'
 
@@ -90,7 +90,7 @@ curl -XPOST -H "Content-Type: application/json" 'http://10.0.0.10:9200/13f-hr/fo
 }
 '
 """
-
+import time
 res = es.search(index_name, {
         "query": {
             "bool": {
@@ -162,5 +162,46 @@ result = es.search(index_name, {
         }
     }
 })
+
+import time
+import elasticsearch
+from pprint import pprint
+es = elasticsearch.Elasticsearch(['10.0.0.10:9200'], http_compress=True)
+index_name = '13f-hr'
+type_name = 'form'
+
+start = time.time()
+res = es.search(index_name, {
+        "query": {
+            "bool": {
+                "must": [
+                    {
+                        "range" : {
+                            "file_date" : {
+                                "gte": "2019-07-01",
+                                "lte": "2019-10-10"
+                            }
+                        }
+                    },
+                    {
+                        "nested": {
+                            "path": "holdings",
+                            "query": {
+                                "bool": {
+                                    "must": {
+                                        "match": {"holdings.cusip": "N14506104"}
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+}, size=1000)
+end = time.time()
+print(end-start)
+
+
 
 

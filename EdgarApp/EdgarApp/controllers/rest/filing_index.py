@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import abort, jsonify, request, Response
+from flask import abort, jsonify, request
 
 from flask_restful import Resource, reqparse
 
@@ -69,9 +69,7 @@ class IndexAPI(Resource):
             data = index.get_by_cik_form_type_date_range(cik, form_type, start_date, end_date)
 
         if data:
-            content = gzip_response(data)
-            response = Response(content, mimetype='application/gzip')
-            return response
+            return jsonify({'result': data})
 
         abort(400)
 
