@@ -11,7 +11,7 @@ To query the content of filing documents, this call gets the 13F-HR forms that f
 http://www.minimind.club/13f_search?cusip=60937P106&period1=20190701&period2=20190901
 
 Pipeline
-![alt text](https://drive.google.com/file/d/1D0OmUFWqB4eSB3Bgd2Jz2LOOZTJAaBoT/view?usp=sharing)
+![alt text](https://drive.google.com/uc?export=view&id=1D0OmUFWqB4eSB3Bgd2Jz2LOOZTJAaBoT)
 
 Technical challenge
 Use Celery and RabbitMQ to build a distributed computing cluster to increase efficiency of batch processing of filing index documents and filing documents.
