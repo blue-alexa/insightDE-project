@@ -2,6 +2,7 @@ SeeSEC
 A simple, powerful SEC Query API
 
 EDGAR database contains a wealth of information about the Commission and the securities industry which is freely available to the public. Information such as quarterly and yearly analysis of a public traded company, major share holders of a company, insider sells and buys etc, can be found in filings of EDGAR database. It gives investors the ability to assess a company's history and progress, as well as make reasonable assumptions about its future through studying these filings. 
+
 reference: https://www.investopedia.com/articles/fundamental-analysis/08/sec-forms.asp
 
 The SeeSEC API makes query EDGAR filings easy. A simple call gets historical 10-Q form filing information by Apple between 2008-01-01 and 2010-01-01 in json format.
@@ -14,6 +15,7 @@ Pipeline
 ![alt text](https://drive.google.com/uc?export=view&id=1D0OmUFWqB4eSB3Bgd2Jz2LOOZTJAaBoT)
 
 Technical challenge
+
 Use Celery and RabbitMQ to build a distributed computing cluster to increase efficiency of batch processing of filing index documents and filing documents.
 
 
