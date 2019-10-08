@@ -1,10 +1,9 @@
-from flask_script import Manager
+from flask_script import Manager, Server
 from EdgarApp import create_app
 
 app = create_app('EdgarApp.config.DevConfig')
 
 manager = Manager(app)
-
 
 @manager.shell
 def make_shell_context():
