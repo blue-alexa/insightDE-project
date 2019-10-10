@@ -88,7 +88,7 @@ def download_parse_insert(url, form_type):
 
 
 @app.task
-def daily_job():
+def daily_job(download_date):
     """
     Daily download filing index and filing documents, write to MySQL and elastic search
     :return:
@@ -98,9 +98,6 @@ def daily_job():
     FilingIndexDAO = getattr(importlib.import_module('db.filing_index_dao'), 'FilingIndexDAO')
     HistoryDAO = getattr(importlib.import_module('db.history_dao'), 'HistoryDAO')
     ESLoader = getattr(importlib.import_module('elasticsearch.es_loader'), 'ESLoader')
-
-    # Retrieve filing index doc from SEC website
-    download_date = local_timezone.localize(datetime.today())
 
     index_file_content = downloader.download_index(download_date)
     if not index_file_content:
