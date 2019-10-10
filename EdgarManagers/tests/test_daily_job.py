@@ -1,7 +1,7 @@
 import sys
 from datetime import datetime
 
-from ..tasks import daily_job
+from tasks import daily_job
 
 sys.path.append("..")
 
