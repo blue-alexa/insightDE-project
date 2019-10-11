@@ -3,8 +3,8 @@ import logging
 from logging.config import dictConfig
 from datetime import datetime, timedelta
 
-from config import logging_config
-from tasks import process_index
+from EdgarManagers.config import logging_config
+from EdgarManagers.tasks import process_index
 
 dictConfig(logging_config)
 

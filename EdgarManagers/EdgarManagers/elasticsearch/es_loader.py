@@ -1,7 +1,7 @@
 import logging
 import elasticsearch
 
-from config import ELASTIC_URI
+from EdgarManagers.config import ELASTIC_URI
 
 class ESLoader(object):
     def __init__(self):

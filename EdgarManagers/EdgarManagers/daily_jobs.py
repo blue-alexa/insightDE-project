@@ -1,7 +1,7 @@
 from datetime import datetime
 from celery.schedules import crontab
-from tasks import app
-from config import local_timezone
+from EdgarManagers.tasks import app
+from EdgarManagers.config import local_timezone
 
 app.conf.beat_schedule = {
     # Executes every workday at 11 pm.

@@ -1,4 +1,4 @@
-from elasticsearch.es_loader import ESLoader
+from EdgarManagers.elasticsearch.es_loader import ESLoader
 
 loader = ESLoader()
 

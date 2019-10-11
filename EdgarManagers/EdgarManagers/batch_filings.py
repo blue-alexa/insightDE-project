@@ -1,9 +1,9 @@
 import logging
 from logging.config import dictConfig
 
-from config import logging_config
-from db.filing_index_dao import FilingIndexDAO
-from tasks import download_parse_insert
+from EdgarManagers.config import logging_config
+from EdgarManagers.db.filing_index_dao import FilingIndexDAO
+from EdgarManagers.tasks import download_parse_insert
 
 dictConfig(logging_config)
 

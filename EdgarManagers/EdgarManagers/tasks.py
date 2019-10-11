@@ -8,7 +8,7 @@ import celery
 
 from celery.utils.log import get_task_logger
 
-from config import CELERY_BROKER_URL, local_timezone
+from EdgarManagers.config import CELERY_BROKER_URL, local_timezone
 
 app = celery.Celery('tasks',
                     broker=CELERY_BROKER_URL)
