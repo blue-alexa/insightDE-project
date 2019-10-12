@@ -12,7 +12,7 @@ dictConfig(logging_config)
 logger = logging.getLogger("EdgarManagers.batch_filing_index")
 
 # retrieve url from database
-logger.info(f"Starting retrieve urls from database")
+logger.info(f"Starting retrieve urls from SEC database")
 
 parser = argparse.ArgumentParser()
 parser.add_argument('start_date', help='Start downloading date, format YYYY-MM-DD')

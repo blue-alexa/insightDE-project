@@ -1,16 +1,15 @@
 import importlib
-import os
 import sys
-
+import logging
+import time
 sys.path.append("..")
-
-from datetime import datetime
 
 import celery
 
 from celery.utils.log import get_task_logger
 
-from EdgarManagers.config import CELERY_BROKER_URL, local_timezone
+from EdgarManagers.config import CELERY_BROKER_URL
+from EdgarManagers.utils.funcs import time_profile
 
 app = celery.Celery('tasks',
                     broker=CELERY_BROKER_URL)
@@ -18,10 +17,12 @@ app = celery.Celery('tasks',
 logger = get_task_logger(__name__)
 
 @app.task
+@time_profile(logger)
 def process_index(download_date):
     """
     batch process index files
     """
+    start_time = time.time()
     downloader = importlib.import_module('EdgarManagers.utils.downloader')
     IndexParser = getattr(importlib.import_module('EdgarManagers.parsers.index_parser'), 'IndexParser')
     FilingIndexDAO = getattr(importlib.import_module('EdgarManagers.db.filing_index_dao'), 'FilingIndexDAO')
@@ -40,10 +41,12 @@ def process_index(download_date):
     # Insert filing index records to db
     filing_index_dao = FilingIndexDAO()
     filing_index_dao.bulk_insert(records)
+    end_time = time.time()
     logger.info(f"Processed {len(records)} on {download_date.strftime('%Y-%m-%d')} index file")
 
 
 @app.task
+@time_profile(logger)
 def download_parse_insert(url, form_type):
     """
     batch process filing documents
@@ -88,6 +91,7 @@ def download_parse_insert(url, form_type):
 
 
 @app.task
+@time_profile(logger)
 def daily_job(download_date):
     """
     Daily download filing index and filing documents, write to MySQL and elastic search
@@ -120,7 +124,7 @@ def daily_job(download_date):
 
         # check if form parser is available
         parser_name = f"FormParser_{form_type.replace('-', '_')}"
-        parser_module = f'parsers.{parser_name}'
+        parser_module = f'EdgarManagers.parsers.{parser_name}'
         try:
             FormParser = getattr(importlib.import_module(parser_module), parser_name)
         except ModuleNotFoundError:
