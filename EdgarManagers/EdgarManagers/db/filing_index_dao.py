@@ -2,7 +2,7 @@ import logging
 
 from sqlalchemy import exc
 
-from db_utils import get_db_conn
+from .db_utils import get_db_conn
 
 class FilingIndexDAO(object):
     def __init__(self):
