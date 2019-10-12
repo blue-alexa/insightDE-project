@@ -1,8 +1,17 @@
 import sys
+import logging
+from logging.config import dictConfig
+
 sys.path.append("..")
 
+from EdgarManagers.config import logging_config
 from EdgarManagers.elasticsearch_dao.es_loader import ESLoader
 
+dictConfig(logging_config)
+
+# create logger
+logger = logging.getLogger("EdgarManagers.init_es")
+logger.info(f"Initialize Elastic Search")
 loader = ESLoader()
 
 index_name = "13f-hr"
@@ -26,4 +35,5 @@ mapping = {"form": {"properties": {
                          }}
         }}}
 
+loader.create_index(index_name)
 loader.create_mapping(index_name, type_name, mapping)

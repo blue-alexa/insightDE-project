@@ -24,7 +24,7 @@ logging_config = dict(
         'fh': {'class': 'logging.FileHandler',
                'formatter': 'f',
                'level': logging.INFO,
-               'filename': 'es_feed_logger.log'},
+               'filename': 'edgarMangers_logger.log'},
         'ch': {'class': 'logging.StreamHandler',
                'formatter': 'f',
                'level': logging.INFO}
