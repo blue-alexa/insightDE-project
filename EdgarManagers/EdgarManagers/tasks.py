@@ -1,14 +1,11 @@
 import importlib
-import sys
-import time
-sys.path.append("..")
 
 import celery
 
 from celery.utils.log import get_task_logger
 
-from EdgarManagers.config import CELERY_BROKER_URL
-from EdgarManagers.utils.funcs import time_profile
+from config import CELERY_BROKER_URL
+from utils.funcs import time_profile
 
 app = celery.Celery('tasks',
                     broker=CELERY_BROKER_URL)
