@@ -35,6 +35,7 @@ d = filing_start_date
 while d <= filing_end_date:
     if 0<= d.weekday() < 5:
         task_queue.append(process_index.delay(d))
-        d += timedelta(days=1)
+    d += timedelta(days=1)
+logger.info(f"Added {len(task_queue)} tasks")
 
-# python batch_filing_index.py 2000-01-01 2001-01-01
+# python3 batch_filing_index.py 2000-01-01 2001-01-01
