@@ -18,7 +18,7 @@ class IndexParser(object):
         :param data: must be decoded to ISO-8859-1
         :param name:
         :return: list of tuples (cik, company_name, form_type, date_filed, accession_no, url)
-        (str, str, str, datetime, str, str)
+        (str, str, str, str, str, str)
         """
         records = []
         lines = data.split('\n')
@@ -31,10 +31,10 @@ class IndexParser(object):
                     data[i] = self._clean(elem)
 
                 try:
-                    data[3] = datetime.strptime(data[3], "%Y%m%d")
+                    data[3] = datetime.strptime(data[3], "%Y%m%d").strftime("%Y-%m-%d")
                 except ValueError:
                     self.logger.error(f"Failed to process time in line: {line}")
-                    data[3] = datetime.strptime(download_date, "%Y%m%d")
+                    data[3] = datetime.strptime(download_date, "%Y%m%d").strftime("%Y-%m-%d")
 
                 cik, company_name, form_type, date_filed, filing_content = data
                 accession_no = filing_content.split("/")[-1].split(".")[0] # get accession number

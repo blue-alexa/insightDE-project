@@ -13,7 +13,7 @@ class FilingIndexDAO(object):
         for record in records:
             cik, company_name, form_type, date_filed, accession_no, url = record
             sql = f"INSERT INTO filing_index (cik, company_name, form_type, date_filed, accession_number, url) " \
-                f"VALUES('{cik}','{company_name}','{form_type}','{date_filed.strftime('%Y-%m-%d')}','{accession_no}','{url}');"
+                f"VALUES('{cik}','{company_name}','{form_type}','{date_filed}','{accession_no}','{url}');"
             try:
                 self.conn.execute(sql)
                 self.conn.commit()
