@@ -1,6 +1,8 @@
 import importlib
-
+import sys
 import celery
+
+sys.path.append(".")
 
 from celery.utils.log import get_task_logger
 
