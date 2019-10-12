@@ -38,8 +38,6 @@ def process_index(download_date):
     filing_index_dao.bulk_insert(records)
     logger.info(f"Processed {len(records)} on {download_date.strftime('%Y-%m-%d')} index file")
 
-
-process_index("")
 @app.task
 @time_profile(logger)
 def download_parse_insert(url, form_type):
