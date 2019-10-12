@@ -19,12 +19,12 @@ logger.info(f"Starting retrieve urls from SEC database")
 parser = argparse.ArgumentParser()
 parser.add_argument('start_date', help='Start downloading date, format YYYY-MM-DD')
 parser.add_argument('end_date', help='Start downloading date, format YYYY-MM-DD')
-parser.add_argument('target_folder', help='Target folder to store filing data')
 
 val = parser.parse_args()
 start_date = val.start_date
 end_date = val.end_date
-filing_path = val.target_folder
+
+logger.info(f"Retrieve filing index from {start_date} - {end_date}")
 
 filing_start_date = datetime.strptime(start_date, '%Y-%m-%d')
 filing_end_date = datetime.strptime(end_date, '%Y-%m-%d')
@@ -36,3 +36,5 @@ while d <= filing_end_date:
     if 0<= d.weekday() < 5:
         task_queue.append(process_index.delay(d))
         d += timedelta(days=1)
+
+# python batch_filing_index.py 2000-01-01 2001-01-01
