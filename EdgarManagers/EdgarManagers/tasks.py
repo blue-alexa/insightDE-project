@@ -21,9 +21,9 @@ def process_index(download_date):
     """
     batch process index files
     """
-    downloader = importlib.import_module('EdgarManagers.utils.downloader')
-    IndexParser = getattr(importlib.import_module('EdgarManagers.parsers.index_parser'), 'IndexParser')
-    FilingIndexDAO = getattr(importlib.import_module('EdgarManagers.db.filing_index_dao'), 'FilingIndexDAO')
+    downloader = importlib.import_module('utils.downloader')
+    IndexParser = getattr(importlib.import_module('parsers.index_parser'), 'IndexParser')
+    FilingIndexDAO = getattr(importlib.import_module('db.filing_index_dao'), 'FilingIndexDAO')
 
     index_file_content = downloader.download_index(download_date)
     if not index_file_content:
@@ -50,7 +50,7 @@ def download_parse_insert(url, form_type):
     """
     # check if form parser is available
     parser_name = f"FormParser_{form_type.replace('-', '_')}"
-    parser_module = f'EdgarManagers.parsers.{parser_name}'
+    parser_module = f'parsers.{parser_name}'
     try:
         FormParser = getattr(importlib.import_module(parser_module), parser_name)
     except ModuleNotFoundError:
@@ -58,8 +58,8 @@ def download_parse_insert(url, form_type):
         return
 
     # import downloader and esloader
-    downloader = importlib.import_module('EdgarManagers.utils.downloader')
-    ESLoader = getattr(importlib.import_module('EdgarManagers.elasticsearch_dao.es_loader'), 'ESLoader')
+    downloader = importlib.import_module('utils.downloader')
+    ESLoader = getattr(importlib.import_module('elasticsearch_dao.es_loader'), 'ESLoader')
 
     accession_no = url.split("/")[-1].split(".")[0]
     try:
@@ -94,11 +94,11 @@ def daily_job(download_date):
     Daily download filing index and filing documents, write to MySQL and elastic search
     :return:
     """
-    downloader = importlib.import_module('EdgarManagers.utils.downloader')
-    IndexParser = getattr(importlib.import_module('EdgarManagers.parsers.index_parser'), 'IndexParser')
-    FilingIndexDAO = getattr(importlib.import_module('EdgarManagers.db.filing_index_dao'), 'FilingIndexDAO')
-    HistoryDAO = getattr(importlib.import_module('EdgarManagers.db.history_dao'), 'HistoryDAO')
-    ESLoader = getattr(importlib.import_module('EdgarManagers.elasticsearch_dao.es_loader'), 'ESLoader')
+    downloader = importlib.import_module('utils.downloader')
+    IndexParser = getattr(importlib.import_module('parsers.index_parser'), 'IndexParser')
+    FilingIndexDAO = getattr(importlib.import_module('db.filing_index_dao'), 'FilingIndexDAO')
+    HistoryDAO = getattr(importlib.import_module('db.history_dao'), 'HistoryDAO')
+    ESLoader = getattr(importlib.import_module('elasticsearch_dao.es_loader'), 'ESLoader')
 
     index_file_content = downloader.download_index(download_date)
     if not index_file_content:
@@ -121,7 +121,7 @@ def daily_job(download_date):
 
         # check if form parser is available
         parser_name = f"FormParser_{form_type.replace('-', '_')}"
-        parser_module = f'EdgarManagers.parsers.{parser_name}'
+        parser_module = f'parsers.{parser_name}'
         try:
             FormParser = getattr(importlib.import_module(parser_module), parser_name)
         except ModuleNotFoundError:
