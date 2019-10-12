@@ -2,11 +2,9 @@ import argparse
 import logging
 from logging.config import dictConfig
 from datetime import datetime, timedelta
-import sys
-sys.path.append("..")
 
-from EdgarManagers.config import logging_config
-from EdgarManagers.tasks import process_index
+from config import logging_config
+from tasks import process_index
 
 dictConfig(logging_config)
 
@@ -38,4 +36,4 @@ while d <= filing_end_date:
     d += timedelta(days=1)
 logger.info(f"Added {len(task_queue)} tasks")
 
-# python3 batch_filing_index.py 2000-01-01 2001-01-01
+# python3 batch_filing_index.py 2000-01-01 2000-02-01
