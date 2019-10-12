@@ -1,4 +1,7 @@
 import logging
+import sys
+sys.path.append("..")
+
 from logging.config import dictConfig
 
 from EdgarManagers.config import logging_config

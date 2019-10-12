@@ -2,6 +2,8 @@ import argparse
 import logging
 from logging.config import dictConfig
 from datetime import datetime, timedelta
+import sys
+sys.path.append("..")
 
 from EdgarManagers.config import logging_config
 from EdgarManagers.tasks import process_index

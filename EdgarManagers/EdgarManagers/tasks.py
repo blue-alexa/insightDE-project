@@ -1,6 +1,5 @@
 import importlib
 import sys
-import logging
 import time
 sys.path.append("..")
 
@@ -22,7 +21,6 @@ def process_index(download_date):
     """
     batch process index files
     """
-    start_time = time.time()
     downloader = importlib.import_module('EdgarManagers.utils.downloader')
     IndexParser = getattr(importlib.import_module('EdgarManagers.parsers.index_parser'), 'IndexParser')
     FilingIndexDAO = getattr(importlib.import_module('EdgarManagers.db.filing_index_dao'), 'FilingIndexDAO')
@@ -41,7 +39,6 @@ def process_index(download_date):
     # Insert filing index records to db
     filing_index_dao = FilingIndexDAO()
     filing_index_dao.bulk_insert(records)
-    end_time = time.time()
     logger.info(f"Processed {len(records)} on {download_date.strftime('%Y-%m-%d')} index file")
 
 
@@ -62,7 +59,7 @@ def download_parse_insert(url, form_type):
 
     # import downloader and esloader
     downloader = importlib.import_module('EdgarManagers.utils.downloader')
-    ESLoader = getattr(importlib.import_module('EdgarManagers.elasticsearch.es_loader'), 'ESLoader')
+    ESLoader = getattr(importlib.import_module('EdgarManagers.elasticsearch_dao.es_loader'), 'ESLoader')
 
     accession_no = url.split("/")[-1].split(".")[0]
     try:
@@ -101,7 +98,7 @@ def daily_job(download_date):
     IndexParser = getattr(importlib.import_module('EdgarManagers.parsers.index_parser'), 'IndexParser')
     FilingIndexDAO = getattr(importlib.import_module('EdgarManagers.db.filing_index_dao'), 'FilingIndexDAO')
     HistoryDAO = getattr(importlib.import_module('EdgarManagers.db.history_dao'), 'HistoryDAO')
-    ESLoader = getattr(importlib.import_module('EdgarManagers.elasticsearch.es_loader'), 'ESLoader')
+    ESLoader = getattr(importlib.import_module('EdgarManagers.elasticsearch_dao.es_loader'), 'ESLoader')
 
     index_file_content = downloader.download_index(download_date)
     if not index_file_content:

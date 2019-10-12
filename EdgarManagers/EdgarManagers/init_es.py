@@ -1,4 +1,7 @@
-from EdgarManagers.elasticsearch.es_loader import ESLoader
+import sys
+sys.path.append("..")
+
+from EdgarManagers.elasticsearch_dao.es_loader import ESLoader
 
 loader = ESLoader()
 
