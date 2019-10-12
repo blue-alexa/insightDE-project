@@ -21,7 +21,7 @@ def process_index(download_date):
     downloader = importlib.import_module('utils.downloader')
     IndexParser = getattr(importlib.import_module('parsers.index_parser'), 'IndexParser')
     FilingIndexDAO = getattr(importlib.import_module('db.filing_index_dao'), 'FilingIndexDAO')
-    """
+
     index_file_content = downloader.download_index(download_date)
     if not index_file_content:
         return
@@ -37,7 +37,7 @@ def process_index(download_date):
     filing_index_dao = FilingIndexDAO()
     filing_index_dao.bulk_insert(records)
     logger.info(f"Processed {len(records)} on {download_date.strftime('%Y-%m-%d')} index file")
-    """
+
 
 process_index("")
 @app.task
