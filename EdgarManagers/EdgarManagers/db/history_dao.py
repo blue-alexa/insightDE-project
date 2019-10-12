@@ -1,8 +1,8 @@
 import logging
 from datetime import datetime
 
-from EdgarManagers.db.db_utils import get_db_conn
-from EdgarManagers.config import local_timezone
+from db_utils import get_db_conn
+from ..config import local_timezone
 
 class HistoryDAO(object):
     def __init__(self):
