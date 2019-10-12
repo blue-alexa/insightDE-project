@@ -19,10 +19,10 @@ logger = get_task_logger(__name__)
 def process_index(download_date):
     """
     batch process index files
+    :param download_date: str YYYYMMDD
+    :return:
     """
     downloader = importlib.import_module('utils.downloader')
-    parser_module = importlib.import_module('edgar_parsers.index_parser')
-    logger.info(f"parser module dict: {parser_module.__dict__}")
     IndexParser = getattr(importlib.import_module('edgar_parsers.index_parser'), 'IndexParser')
     FilingIndexDAO = getattr(importlib.import_module('db.filing_index_dao'), 'FilingIndexDAO')
 
@@ -40,7 +40,7 @@ def process_index(download_date):
     # Insert filing index records to db
     filing_index_dao = FilingIndexDAO()
     filing_index_dao.bulk_insert(records)
-    logger.info(f"Processed {len(records)} on {download_date.strftime('%Y-%m-%d')} index file")
+    logger.info(f"Processed {len(records)} on {download_date} index file")
 
 @app.task
 @time_profile(logger)

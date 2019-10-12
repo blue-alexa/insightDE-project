@@ -32,7 +32,7 @@ task_queue = []
 d = filing_start_date
 while d <= filing_end_date:
     if 0<= d.weekday() < 5:
-        task_queue.append(process_index.delay(d))
+        task_queue.append(process_index.delay(d.strftime('%Y%m%d')))
     d += timedelta(days=1)
 logger.info(f"Added {len(task_queue)} tasks")
 
