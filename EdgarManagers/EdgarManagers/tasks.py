@@ -40,7 +40,7 @@ def process_index(download_date):
     # Insert filing index records to db
     filing_index_dao = FilingIndexDAO()
     filing_index_dao.bulk_insert(records)
-    logger.info(f"Processed {len(records)} on {download_date} index file")
+    logger.info(f"Number of records processed {len(records)} in {download_date} index file")
 
 @app.task
 @time_profile(logger)
