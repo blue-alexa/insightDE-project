@@ -20,3 +20,5 @@ class FilingIndexDAO(object):
             except exc.SQLAlchemyError:
                 self.logger.error(f"Failed to insert line: {record}")
 
+        self.conn.close()
+

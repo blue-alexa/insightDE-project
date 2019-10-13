@@ -16,7 +16,7 @@ class IndexParser(object):
     def parse(self, data, download_date):
         """
         :param data: must be decoded to ISO-8859-1
-        :param name:
+        :param download_date: YYYYMMDD
         :return: list of tuples (cik, company_name, form_type, date_filed, accession_no, url)
         (str, str, str, str, str, str)
         """

@@ -92,6 +92,7 @@ def download_parse_insert(url, form_type):
 def daily_job(download_date):
     """
     Daily download filing index and filing documents, write to MySQL and elastic search
+    :param download_date: str YYYYMMDD
     :return:
     """
     downloader = importlib.import_module('utils.downloader')
@@ -152,6 +153,7 @@ def daily_job(download_date):
 
 
 # celery -A tasks worker --loglevel=info
+# celery -A tasks worker -f celery_worker_log.log --loglevel=info
 
 
 
