@@ -17,8 +17,9 @@ class FilingIndexDAO(object):
             try:
                 self.conn.execute(sql)
                 self.conn.commit()
-            except exc.SQLAlchemyError:
+            except exc.SQLAlchemyError as e:
                 self.logger.error(f"Failed to insert line: {record}")
+                self.logger.error(str(e))
 
         self.conn.close()
 
