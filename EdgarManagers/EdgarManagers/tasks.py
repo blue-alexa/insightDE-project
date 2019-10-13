@@ -153,7 +153,7 @@ def daily_job(download_date):
 
 
 # celery -A tasks worker --loglevel=info
-# celery -A tasks worker -f celery_worker_log.log --loglevel=info
+# celery -A tasks worker -f celery_worker_log_patch.log --loglevel=info
 
 
 
