@@ -34,9 +34,9 @@ d = filing_start_date
 while d <= filing_end_date:
     if 0<= d.weekday() < 5:
         record_no = filing_index_dao.check_record_no_by_date(d.strftime('%Y-%m-%d'))
-        print(type(record_no))
         if record_no == 0:
-            task_queue.append(d.strftime('%Y-%m-%d'))
-        # task_queue.append(process_index.delay(d.strftime('%Y%m%d')))
+            task_queue.append(process_index.delay(d.strftime('%Y%m%d')))
     d += timedelta(days=1)
 logger.info(f"Added {len(task_queue)} tasks")
+
+# python3 batch_filing_index_patch.py 2000-01-01 2019-10-12
