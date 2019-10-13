@@ -1,13 +1,17 @@
 import logging
+import sys
+
+sys.path.append("..")
 
 from sqlalchemy import exc
 
 from .db_utils import get_db_conn
 
+filing_index_logger = logging.getLogger("DailyJobs.dao.filing_index")
+
 class FilingIndexDAO(object):
     def __init__(self):
         self.conn = get_db_conn()
-        self.logger = logging.getLogger("DailyJobs.dao.filing_index")
 
     def bulk_insert(self, records):
         for record in records:
@@ -18,7 +22,23 @@ class FilingIndexDAO(object):
                 self.conn.execute(sql)
                 self.conn.commit()
             except exc.SQLAlchemyError as e:
-                self.logger.error(str(e))
+                filing_index_logger.error(str(e))
 
         self.conn.close()
+
+    def check_record_no_by_date(self, date_filed):
+        """
+        return number of records on specific file date
+        :param date_filed: str YYYY-MM-DD
+        :return: int
+        """
+        sql = f"SELECT COUNT(id) AS counts FROM filing_index WHERE date_filed='{date_filed}';"
+        try:
+            rs = self.conn.execute(sql).fetchone()
+            return (rs['counts'])
+        except exc.SQLAlchemyError as e:
+            filing_index_logger.error(str(e))
+
+        self.conn.close()
+
 

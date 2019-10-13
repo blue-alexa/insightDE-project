@@ -12,3 +12,4 @@ def time_profile(logger):
             return result
         return wrapped
     return concrete_decorator
+

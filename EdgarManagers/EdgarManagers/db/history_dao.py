@@ -9,10 +9,11 @@ from sqlalchemy import exc
 from db_utils import get_db_conn
 from config import local_timezone
 
+history_logger = logging.getLogger("DailyJobs.dao.history")
+
 class HistoryDAO(object):
     def __init__(self):
         self.conn = get_db_conn()
-        self.logger = logging.getLogger("DailyJobs.dao.history")
 
     def insert_history(self, download_date):
         """
@@ -28,7 +29,7 @@ class HistoryDAO(object):
             self.conn.execute(sql)
             self.conn.commit()
         except exc.SQLAlchemyError as e:
-            self.logger.error(str(e))
+            history_logger.error(str(e))
         self.conn.close()
 
     def get_histroy(self, download_date):

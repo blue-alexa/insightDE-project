@@ -1,9 +1,11 @@
 import logging
 from datetime import datetime
 
+index_parser_logger = logging.getLogger("DailyJobs.index_parser")
+
 class IndexParser(object):
     def __init__(self):
-        self.logger = logging.getLogger("DailyJobs.index_parser")
+        pass
 
     def _clean(self, entry):
         entry = entry.strip()
@@ -33,7 +35,7 @@ class IndexParser(object):
                 try:
                     data[3] = datetime.strptime(data[3], "%Y%m%d").strftime("%Y-%m-%d")
                 except ValueError:
-                    self.logger.error(f"Failed to process time in line: {line}")
+                    index_parser_logger.error(f"Failed to process time in line: {line}")
                     data[3] = datetime.strptime(download_date, "%Y%m%d").strftime("%Y-%m-%d")
 
                 cik, company_name, form_type, date_filed, filing_content = data

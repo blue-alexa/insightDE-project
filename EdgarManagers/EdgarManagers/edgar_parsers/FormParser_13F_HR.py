@@ -3,12 +3,14 @@ import logging
 
 from lxml import etree
 
+F13_parser_logger = logging.getLogger("DailyJobs.FormParser_13F_HR")
+
 class FormParser_13F_HR(object):
     header_pattern = '<SEC-HEADER>(.*?)</SEC-HEADER>'
     doc_pattern = '<XML>(.*?)</XML>'
 
     def __init__(self):
-        self.logger = logging.getLogger("DailyJobs.FormParser_13F_HR")
+        pass
 
     def _get_header_info(self, header):
         lines = header.split("\n")
@@ -85,7 +87,7 @@ class FormParser_13F_HR(object):
         if m_header:
             sec_header = m_header.group(0)
         else:
-            self.logger.error(f"No SEC header in {self.source_name}")
+            F13_parser_logger.error(f"No SEC header in {self.source_name}")
             return
 
         header = self._get_header_info(sec_header)
@@ -93,9 +95,9 @@ class FormParser_13F_HR(object):
         entry.update(header)
         if holdings:
             entry.update({"holdings": holdings})
-            self.logger.info(f"Successfully retrieve holding information from {self.source_name}")
+            F13_parser_logger.info(f"Successfully retrieve holding information from {self.source_name}")
         else:
-            self.logger.error(f"Can not find holding information in {self.source_name}")
+            F13_parser_logger.error(f"Can not find holding information in {self.source_name}")
             return
 
         return entry
