@@ -1,8 +1,11 @@
 import logging
+import sys
+
+sys.path.append("..")
 
 import elasticsearch
 
-from EdgarManagers.config import ELASTIC_URI
+from config import ELASTIC_URI
 
 es_logger = logging.getLogger("DailyJobs.es_loader")
 
