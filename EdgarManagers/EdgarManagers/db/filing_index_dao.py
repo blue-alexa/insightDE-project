@@ -41,4 +41,14 @@ class FilingIndexDAO(object):
 
         self.conn.close()
 
+    def get_url(self, form_type, start=None):
+        sql = f"SELECT url FROM filing_index WHERE form_type='{form_type}' and date_filed>='{start}';"
+        try:
+            rs = self.conn.execute(sql).fetchall()
+            return ([row['url'] for row in rs])
+        except exc.SQLAlchemyError as e:
+            filing_index_logger.error(str(e))
+
+        self.conn.close()
+
 
