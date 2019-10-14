@@ -22,6 +22,7 @@ def process_index(download_date):
     :param download_date: str YYYYMMDD
     :return:
     """
+    logger.info(f"Start processing filing index {download_date}")
     downloader = importlib.import_module('utils.downloader')
     IndexParser = getattr(importlib.import_module('edgar_parsers.index_parser'), 'IndexParser')
     FilingIndexDAO = getattr(importlib.import_module('db.filing_index_dao'), 'FilingIndexDAO')

@@ -12,7 +12,7 @@ def download(url):
         logger.error(f"Failed to retreive data from {url}")
 
     time.sleep(5)
-    
+
     if response.status_code == 200:
         content = response.content
         content = content.decode('ISO-8859-1') # decode with lain-1
