@@ -35,6 +35,7 @@ while d <= filing_end_date:
     if 0<= d.weekday() < 5:
         record_no = filing_index_dao.check_record_no_by_date(d.strftime('%Y-%m-%d'))
         if record_no == 0:
+            logger.info(f"Added {d.strftime('%Y-%m-%d')}")
             task_queue.append(process_index.delay(d.strftime('%Y%m%d')))
     d += timedelta(days=1)
 logger.info(f"Added {len(task_queue)} tasks")
