@@ -43,6 +43,7 @@ class FilingIndexDAO(object):
 
     def get_url(self, form_type, start=None):
         sql = f"SELECT url FROM filing_index WHERE form_type='{form_type}' and date_filed>='{start}';"
+        print(sql)
         try:
             rs = self.conn.execute(sql).fetchall()
             return ([row['url'] for row in rs])
