@@ -23,3 +23,5 @@ urls = filingIndex.get_url(form_type, start='2019-01-01')
 task_queue = []
 for url in urls:
     task_queue.append(download_parse_insert.delay(url, form_type))
+
+# python3 batch_filings.py

@@ -1,5 +1,6 @@
 import importlib
 import sys
+import time
 import celery
 
 sys.path.append(".")
@@ -62,10 +63,11 @@ def download_parse_insert(url, form_type):
     downloader = importlib.import_module('utils.downloader')
     ESLoader = getattr(importlib.import_module('elasticsearch_dao.es_loader'), 'ESLoader')
 
+    download_start = time.time()
     accession_no = url.split("/")[-1].split(".")[0]
     try:
         form_content = downloader.download(url)
-        logger.info(f"Downloaded form {id}")
+        logger.info(f"Downloaded form {id} finished in {time.time()-download_start} seconds")
     except Exception:
         logger.error(f"Failed to download from {url}")
         return
@@ -78,12 +80,13 @@ def download_parse_insert(url, form_type):
         logger.error(f"Failed to parse form {url}")
         return
 
+    parser_start = time.time()
     loader = ESLoader()
     index_name = form_type.lower()
     type_name = "form"
     try:
         loader.insert(index_name, type_name, accession_no, data)
-        logger.info(f"Inserted form {accession_no} to elasticsearch")
+        logger.info(f"Inserted form {accession_no} to elasticsearch finished in {time.time()-parser_start} seconds")
     except Exception:
         logger.error(f"Failed to insert form {accession_no} to elasticsearch")
 
@@ -154,7 +157,7 @@ def daily_job(download_date):
 
 
 # celery -A tasks worker --loglevel=info
-# celery -A tasks worker -f celery_worker_log_patch.log --loglevel=info
+# celery -A tasks worker -f celery_worker_log_filings.log --loglevel=info
 
 
 
