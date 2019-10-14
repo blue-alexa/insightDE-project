@@ -21,9 +21,8 @@ form_type = '13F-HR'
 urls = filingIndex.get_url(form_type, start='2019-01-01')
 
 task_queue = []
-print(urls)
 for url in urls:
-    # task_queue.append(download_parse_insert.delay(url, form_type))
-logger.info(f"Added {len(url)} tasks")
+    task_queue.append(download_parse_insert.delay(url, form_type))
+logger.info(f"Added {len(urls)} tasks")
 
 # python3 batch_filings.py
