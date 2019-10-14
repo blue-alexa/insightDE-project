@@ -11,7 +11,7 @@ def download(url):
     except Exception:
         logger.error(f"Failed to retreive data from {url}")
 
-    time.sleep(5)
+    time.sleep(0.2) # sleep 200 miliseconds
 
     if response.status_code == 200:
         content = response.content
