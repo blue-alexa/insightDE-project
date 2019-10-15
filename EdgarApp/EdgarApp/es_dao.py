@@ -185,3 +185,4 @@ class ES_ThirteenFHR_DAO(object):
         return {'result': result['hits']['hits'][0]['_source']}
 
 
+es_dao = ES_ThirteenFHR_DAO()

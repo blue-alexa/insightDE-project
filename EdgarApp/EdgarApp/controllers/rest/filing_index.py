@@ -53,7 +53,7 @@ class IndexAPI(Resource):
             end_date = datetime.today().strftime("%Y-%m-%d")
 
         index = Index()
-        data = {}
+        data = []
 
         if not cik and not form_type:
             data = index.get_by_date_range(start_date, end_date)
@@ -67,8 +67,7 @@ class IndexAPI(Resource):
         if cik and form_type:
             data = index.get_by_cik_form_type_date_range(cik, form_type, start_date, end_date)
 
-        if data:
-            return jsonify({'result': data})
+        return jsonify({'result': data})
 
-        abort(400)
+
 

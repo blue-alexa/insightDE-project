@@ -1,10 +1,10 @@
 from datetime import datetime
 
-from flask import abort, jsonify
+from flask import jsonify
 
 from flask_restful import Resource, reqparse
 
-from EdgarApp.es_dao import ES_ThirteenFHR_DAO
+from EdgarApp.es_dao import es_dao
 
 thirteenF_parser = reqparse.RequestParser()
 
@@ -42,7 +42,7 @@ class ThirteenFAPI(Resource):
         cik = args['cik']
         cusip = args['cusip']
 
-        dao = ES_ThirteenFHR_DAO()
+
         if not start:
             start = '2019-01-01'
         else:
@@ -59,19 +59,19 @@ class ThirteenFAPI(Resource):
         data = {}
 
         if cik and not cusip:
-            data = dao.filter_cik_with_date_range(index_name, start, end, cik)
+            data = es_dao.filter_cik_with_date_range(index_name, start, end, cik)
 
         if cusip and not cik:
-            data = dao.filter_cusip_with_date_range(index_name, start, end, cusip)
+            data = es_dao.filter_cusip_with_date_range(index_name, start, end, cusip)
 
         if not cik and not cusip:
-            data = dao.filter_date_range(index_name, start, end)
+            data = es_dao.filter_date_range(index_name, start, end)
 
         if cik and cusip:
-            data = dao.filter_cik_cusip_with_date_range(index_name, start, end, cik, cusip)
+            data = es_dao.filter_cik_cusip_with_date_range(index_name, start, end, cik, cusip)
 
+        res = []
         if data:
-            res = []
             for i, hit in enumerate(data['result']):
                 res.append({
                             'accession_number': hit['_id'],
@@ -81,9 +81,8 @@ class ThirteenFAPI(Resource):
                             'report_date': hit['_source']['report_date']
                             })
 
-            return jsonify({'result': res})
+        return jsonify({'result': res})
 
-        abort(400)
 
 
 

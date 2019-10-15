@@ -105,10 +105,14 @@ def daily_job(download_date):
     HistoryDAO = getattr(importlib.import_module('db.history_dao'), 'HistoryDAO')
     ESLoader = getattr(importlib.import_module('elasticsearch_dao.es_loader'), 'ESLoader')
 
+    download_index_start = time.time()
     index_file_content = downloader.download_index(download_date)
     if not index_file_content:
         return
 
+    logger.info(f"Finish download index file in {time.time()-download_index_start} seconds")
+
+    parse_index_start = time.time()
     # Parse filing index doc
     ind_parser = IndexParser()
     records = ind_parser.parse(index_file_content, download_date)
@@ -116,9 +120,13 @@ def daily_job(download_date):
     if not records:
         return
 
+    logger.info(f"Finished parsing index file in {time.time()-parse_index_start} seconds")
+
+    index_insert_start = time.time()
     # Insert filing index records to db
     filing_index_dao = FilingIndexDAO()
     filing_index_dao.bulk_insert(records)
+    logger.info(f"Finished inserting index records to db in {time.time()-index_insert_start} seconds")
 
     # Retrieve filing docs, parse, insert into ES
     for record in records:
@@ -131,17 +139,22 @@ def daily_job(download_date):
             FormParser = getattr(importlib.import_module(parser_module), parser_name)
         except ModuleNotFoundError:
             logger.error(f"Failed to loader form parser for {form_type}")
-            return
+            continue
 
+        download_filing_start = time.time()
         # Download form from SEC
         form_content = downloader.download(url)
         if not form_content:
             continue
+        logger.info(f"Finished downloading filing in {time.time()-download_filing_start} seconds")
 
+        parse_filing_start = time.time()
         # Parse form with FormParser
         form_parser = FormParser()
         form_json = form_parser.parse(form_content, url)
+        logger.info(f"Finished parsing filing in {time.time()-parse_filing_start} seconds")
 
+        insert_es_start = time.time()
         # Load json to ES
         loader = ESLoader()
         index_name = form_type.lower()
@@ -149,6 +162,7 @@ def daily_job(download_date):
         try:
             loader.insert(index_name, type_name, accession_no, form_json)
             logger.info(f"Inserted {form_type} form {accession_no} to elasticsearch")
+            logger.info(f"Finished insert filing to elastic search in {time.time() - insert_es_start} seconds")
         except Exception:
             logger.error(f"Failed to insert {form_type} form {accession_no} to elasticsearch")
 
