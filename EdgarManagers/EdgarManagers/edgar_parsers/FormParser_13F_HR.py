@@ -3,9 +3,11 @@ import logging
 
 from lxml import etree
 
+from FormParser import AbstractFormParser
+
 F13_parser_logger = logging.getLogger("DailyJobs.FormParser_13F_HR")
 
-class FormParser_13F_HR(object):
+class FormParser_13F_HR(AbstractFormParser):
     header_pattern = '<SEC-HEADER>(.*?)</SEC-HEADER>'
     doc_pattern = '<XML>(.*?)</XML>'
 
