@@ -12,17 +12,28 @@ filing_index_logger = logging.getLogger("DailyJobs.dao.filing_index")
 class FilingIndexDAO(object):
     def __init__(self):
         self.conn = get_db_conn()
+        self.max_retries = 2
 
     def bulk_insert(self, records):
         for record in records:
             cik, company_name, form_type, date_filed, accession_no, url = record
             sql = f"INSERT INTO filing_index (cik, company_name, form_type, date_filed, accession_number, url) " \
                 f"VALUES('{cik}','{company_name}','{form_type}','{date_filed}','{accession_no}','{url}');"
-            try:
-                self.conn.execute(sql)
-                self.conn.commit()
-            except exc.SQLAlchemyError as e:
-                filing_index_logger.error(str(e))
+            should_retry = True
+            retries = 0
+            while should_retry:
+                try:
+                    self.conn.execute(sql)
+                    self.conn.commit()
+                    should_retry = False
+                except exc.OperationalError as e:
+                    retries = retries + 1
+                    if retries > self.max_retries:
+                        filing_index_logger.error(str(e))
+                        should_retry = False
+                except exc.SQLAlchemyError as e:
+                    filing_index_logger.error(str(e))
+                    should_retry = False
 
         self.conn.close()
 
