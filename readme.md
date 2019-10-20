@@ -1,5 +1,5 @@
 # SeeSEC
-**A simple, powerful SEC Query API**
+A simple, powerful SEC Query API
 
 ## Background
 EDGAR database contains a wealth of information about the Commission and the securities industry which is freely available to the public. Information such as quarterly and yearly analysis of a public traded company, major share holders of a company, insider sells and buys etc, can be found in the filings of EDGAR database. It gives investors the ability to assess a company's history and progress, as well as make reasonable assumptions about its future through studying these filings. 
@@ -22,14 +22,14 @@ This API currently only supports 13H-HR from 2019-01-01 to 2019-10-01 form conte
 ## Pipeline
 ![alt text](images/architecture.png)
 
-## Technical challenge
+## Technical challenges
 1. System scalability
-Use Python Celery to set up distributed computing cluster for high work load. Computing capability can be scaled up horizontally by add more Celery workers.
-1. Extensibility
-EdgarMangers module allow users to add customized parsers to process filing documents. (For implementation details, please check readme in EdgarManagers module)
+   * Use Python Celery to set up distributed computing cluster for high work load. Computing capability can be scaled up horizontally by add more Celery workers.
+1. Extensibility  
+   * EdgarMangers module allow users to add customized parsers to process filing documents. (For implementation details, please check readme in EdgarManagers module)
 1. High data accuracy (future plan)  
-Add retries for transient failures in MySQL
-Add NoSQL database as source of truth for ElasticSearch
+   * Add retries for transient failures in MySQL   
+   * Add NoSQL database as source of truth for ElasticSearch
 
 
 
