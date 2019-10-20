@@ -14,7 +14,8 @@ The `batch_filings.py` module currently only supports batch processing on 13F-HR
 
 The `init_es.py` module initializes ElasticSearch index and mapping. 
 
-The `daily_jobs.py` module runs daily jobs for retrieving and processing index file and filing documents, please run this script on Celery executor.
+The `daily_jobs.py` module runs daily jobs for retrieving and processing index file and filing documents, please run this script on Celery executor.  
+```celery -A daily_jobs beat -f <logfile> --loglevel=info```
 
 To start Celery workers, please run the following script on every Celery worker:   
 ```celery -A tasks worker -f <logfile> --loglevel=info```
