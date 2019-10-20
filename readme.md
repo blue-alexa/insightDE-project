@@ -20,7 +20,7 @@ This API currently only supports 13H-HR from 2019-01-01 to 2019-10-01 form conte
 [http://www.minimind.club](http://www.minimind.club)
 
 ## Pipeline
-![alt text](https://drive.google.com/open?id=127vgSkj-NrfL_i7FCZaL6rp4aNv6qKYU)
+![alt text](images/architecture.png)
 
 ## Technical challenge
 1. System scalability
