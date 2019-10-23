@@ -24,6 +24,7 @@ To start Celery workers, please run the following script on every Celery worker:
 To add a customized parser class, please create a class derived from class `AbstractFormParser`, name the file as `FormParser_<form-type>.py` and save it in the EdgarManagers/edgar_parsers folder. 
 
 ## Directory structure
+```
 ├── EdgarManagers   
 │   ├── __init__.py   
 │   ├── batch_filing_index.py   
@@ -56,7 +57,7 @@ To add a customized parser class, please create a class derived from class `Abst
 └── tests   
     ├── __init__.py
 
-
+```
 
 ## Flow Charts
 The workflow of batch processing filing index:   
