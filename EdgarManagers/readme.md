@@ -23,6 +23,41 @@ To start Celery workers, please run the following script on every Celery worker:
 ## Development
 To add a customized parser class, please create a class derived from class `AbstractFormParser`, name the file as `FormParser_<form-type>.py` and save it in the EdgarManagers/edgar_parsers folder. 
 
+## Directory structure
+├── EdgarManagers   
+│   ├── __init__.py   
+│   ├── batch_filing_index.py   
+│   ├── batch_filings.py   
+│   ├── config.py   
+│   ├── daily_jobs.py   
+│   ├── db   
+│   │   ├── __init__.py   
+│   │   ├── db_utils.py   
+│   │   ├── filing_index_dao.py   
+│   │   ├── history_dao.py   
+│   │   └── tables.sql   
+│   ├── edgar_parsers   
+│   │   ├── FormParser.py   
+│   │   ├── FormParser_13F_HR.py   
+│   │   ├── __init__.py   
+│   │   └── index_parser.py   
+│   ├── elasticsearch_dao   
+│   │   ├── __init__.py   
+│   │   └── es_loader.py   
+│   ├── init_es.py   
+│   ├── requirements.txt   
+│   ├── tasks.py   
+│   └── utils   
+│       ├── __init__.py   
+│       ├── downloader.py   
+│       └── funcs.py   
+├── docker-compose.yml   
+├── readme.md   
+└── tests   
+    ├── __init__.py
+
+
+
 ## Flow Charts
 The workflow of batch processing filing index:   
 ![alt text](../images/batch_filing_index_flowchart.png)   
